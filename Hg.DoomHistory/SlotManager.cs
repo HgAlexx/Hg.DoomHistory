@@ -502,6 +502,8 @@ namespace Hg.DoomHistory
 
             _slot.comboBoxMaps.Items.Clear();
 
+            _maps.Sort((data1, data2) => _mapComparer.Compare(data1.NameInternal, data2.NameInternal));
+
             foreach (MapData mapData in _maps)
             {
                 _slot.comboBoxMaps.Items.Add(mapData);
@@ -534,7 +536,6 @@ namespace Hg.DoomHistory
             {
                 mapData = new MapData(_pathSlot, mapName);
                 _maps.Add(mapData);
-                _maps.Sort((data1, data2) => _mapComparer.Compare(data1.Name, data2.Name));
             }
 
             return mapData;
@@ -593,6 +594,9 @@ namespace Hg.DoomHistory
 
                             GameDetails gameDetails = new GameDetails(_id, content);
                             gameDetails.SetPath(timeStampPath);
+
+                            if (string.IsNullOrEmpty(mapData.NameInternal))
+                                mapData.NameInternal = gameDetails.MapName;
 
                             string markerFile = Path.Combine(timeStampPath, ".hg.death");
                             if (File.Exists(markerFile))
@@ -678,6 +682,9 @@ namespace Hg.DoomHistory
             }
 
             MapData mapData = CheckAndGetMapData(gameDetails.MapSafe);
+            if (string.IsNullOrEmpty(mapData.NameInternal))
+                mapData.NameInternal = gameDetails.MapName;
+
             CheckAndUpdateGameDetails(mapData, timeStampFolderName, gameDetails);
 
             return true;

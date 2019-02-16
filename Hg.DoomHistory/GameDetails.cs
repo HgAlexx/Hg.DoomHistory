@@ -92,7 +92,7 @@ namespace Hg.DoomHistory
             IsDeath = false;
             Completed = false;
             Difficulty = 42;
-            Map = "";
+            MapDesc = "";
             MapSafe = "";
             HasScreenshots = false;
             Notes = "";
@@ -140,7 +140,14 @@ namespace Hg.DoomHistory
         [Browsable(true)]
         [ReadOnly(true)]
         [Category("Saved Game Details")]
-        public string Map { get; set; }
+        [DisplayName("Map Description")]
+        public string MapDesc { get; set; }
+
+        [Browsable(true)]
+        [ReadOnly(true)]
+        [Category("Saved Game Details")]
+        [DisplayName("Map Name")]
+        public string MapName { get; set; }
 
         [TypeConverter(typeof(YesNoConverter))]
         [Browsable(true)]
@@ -223,7 +230,12 @@ namespace Hg.DoomHistory
 
                     if (values[0] == "mapDesc")
                     {
-                        Map = values[1];
+                        MapDesc = values[1];
+                    }
+
+                    if (values[0] == "mapName")
+                    {
+                        MapName = values[1];
                     }
 
                     if (values[0] == "time")
@@ -233,8 +245,8 @@ namespace Hg.DoomHistory
                 }
             }
 
-            if (Map != "")
-                MapSafe = Map;
+            if (MapDesc != "")
+                MapSafe = MapDesc;
 
             foreach (char invalidPathChar in System.IO.Path.GetInvalidPathChars())
             {

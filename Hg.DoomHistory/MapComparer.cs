@@ -16,7 +16,12 @@ namespace Hg.DoomHistory
 
         public static int MapNameToIndex(string name)
         {
-            int index = Array.IndexOf(MapData.Maps, name) + 1;
+            int index = Array.IndexOf(MapData.MapNames, name) + 1;
+            return index;
+        }
+        public static int MapDescENToIndex(string name)
+        {
+            int index = Array.IndexOf(MapData.MapsDescEN, name) + 1;
             return index;
         }
     }
