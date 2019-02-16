@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Made by HgAlexx")]
 [assembly: AssemblyProduct("Hg.DoomHistory")]
 [assembly: AssemblyCopyright("https://github.com/HgAlexx/Hg.DoomHistory")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Hg")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]

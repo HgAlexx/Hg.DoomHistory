@@ -4,38 +4,22 @@ namespace Hg.DoomHistory
 {
     public class MapData
     {
-        public static readonly string[] MapsDescEN =
+        public static Dictionary<string, int> MapsLevels = new Dictionary<string, int>
         {
-            @"The UAC",
-            @"Resource Operations",
-            @"Foundry",
-            @"Argent Facility",
-            @"Argent Energy Tower",
-            @"Kadingir Sanctum",
-            @"Argent Facility (Destroyed)",
-            @"Advanced Research Complex",
-            @"Lazarus Labs",
-            @"Titan's Realm",
-            @"The Necropolis",
-            @"VEGA Central Processing",
-            @"Argent D'Nur"
-        };
-
-        public static readonly string[] MapNames =
-        {
-            @"game/sp/intro/intro",
-            @"game/sp/resource_ops/resource_ops",
-            @"game/sp/resource_ops_foundry/resource_ops_foundry",
-            @"game/sp/surface1/surface1",
-            @"game/sp/argent_tower/argent_tower",
-            @"game/sp/blood_keep/blood_keep",
-            @"game/sp/surface2/surface2",
-            @"game/sp/bfg_division/bfg_division",
-            @"game/sp/lazarus/lazarus",
-            @"game/sp/blood_keep_b/blood_keep_b",
-            @"game/sp/blood_keep_c/blood_keep_c",
-            @"game/sp/polar_core/polar_core",
-            @"game/sp/titan/titan"
+            {@"game/sp/intro/intro", 1},
+            {@"game/sp/resource_ops/resource_ops", 2},
+            {@"game/sp/resource_ops_foundry/resource_ops_foundry", 3},
+            {@"game/sp/surface1/surface1", 4},
+            {@"game/sp/argent_tower/argent_tower", 5},
+            {@"game/sp/blood_keep/blood_keep", 6},
+            {@"game/sp/surface2/surface2", 7},
+            {@"game/sp/bfg_division/bfg_division", 8},
+            {@"game/sp/lazarus/lazarus", 9},
+            {@"game/sp/lazarus_2/lazarus_2", 9},
+            {@"game/sp/blood_keep_b/blood_keep_b", 10},
+            {@"game/sp/blood_keep_c/blood_keep_c", 11},
+            {@"game/sp/polar_core/polar_core", 12},
+            {@"game/sp/titan/titan", 13}
         };
 
         public readonly List<GameDetails> Games = new List<GameDetails>();
@@ -63,11 +47,8 @@ namespace Hg.DoomHistory
 
         public override string ToString()
         {
-            int index = MapComparer.MapNameToIndex(NameInternal);
-            if (index < 0)
-                index = MapComparer.MapDescENToIndex(Name);
-            string level = ("#" + index).PadRight(3);
-            return level + ": " + Name;
+            int levelNumber = MapComparer.MapNameToLevel(NameInternal);
+            return ("#" + levelNumber).PadRight(3) + ": " + Name;
         }
     }
 }

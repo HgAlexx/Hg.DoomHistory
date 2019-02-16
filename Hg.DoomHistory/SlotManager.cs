@@ -502,7 +502,7 @@ namespace Hg.DoomHistory
 
             _slot.comboBoxMaps.Items.Clear();
 
-            _maps.Sort((data1, data2) => _mapComparer.Compare(data1.NameInternal, data2.NameInternal));
+            _maps.Sort((data1, data2) => _mapComparer.Compare(data1, data2));
 
             foreach (MapData mapData in _maps)
             {
@@ -510,7 +510,9 @@ namespace Hg.DoomHistory
             }
 
             if (selection != null && _slot.comboBoxMaps.Items.Contains(selection))
+            {
                 _slot.comboBoxMaps.SelectedItem = selection;
+            }
             else
             {
                 if (_slot.comboBoxMaps.Items.Count > 0)
@@ -522,7 +524,8 @@ namespace Hg.DoomHistory
                 _slot.comboBoxMaps.SelectedIndex = _slot.comboBoxMaps.Items.Count - 1; // Select new map
 
             _slot.comboBoxMaps.EndUpdate();
-            ComboBoxMapsOnSelectionChangeCommitted(null, null);
+
+            ComboBoxMapsOnSelectionChangeCommitted(_slot.comboBoxMaps, null);
 
             _slot.checkBoxAutoBackup.Checked = _autoBackup;
             _slot.checkBoxIncludeDeath.Checked = _includeDeath;
@@ -551,7 +554,7 @@ namespace Hg.DoomHistory
 
             mapData.Games.Add(inGameDetails);
             mapData.Games.Sort((data1, data2) =>
-                _timeStampComparer.Compare(data1.DateTimeString, data2.DateTimeString));
+                _timeStampComparer.Compare(data1, data2));
         }
 
         private GameDetails CheckAndGetGameDetails(MapData mapData, string timeStamp)
@@ -695,7 +698,7 @@ namespace Hg.DoomHistory
             IntPtr doomPtr = IntPtr.Zero;
             foreach (Process process in Process.GetProcesses())
             {
-                if (process.ProcessName.StartsWith("DOOM"))
+                if (process.ProcessName == ("DOOMx64") || process.ProcessName == "DOMMx64vk")
                 {
                     doomPtr = process.MainWindowHandle;
                     break;
@@ -796,9 +799,15 @@ namespace Hg.DoomHistory
         {
             try
             {
+                // Fail-safe: check if Doom is running for auto-backup
+                IntPtr doomPtr = GetDoomPtr();
+                if (doomPtr == IntPtr.Zero)
+                    return;
+
                 // Mostly in case of death
                 if (e.Name == "checkpoint_alt.dat")
                     _isCheckPointAlt = true;
+
                 // Proper checkpoint
                 if (e.Name == "checkpoint.dat")
                     _isCheckPoint = true;

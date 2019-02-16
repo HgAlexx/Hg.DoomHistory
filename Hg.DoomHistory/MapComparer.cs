@@ -3,26 +3,22 @@ using System.Collections.Generic;
 
 namespace Hg.DoomHistory
 {
-    public class MapComparer : IComparer<string>
+    public class MapComparer : IComparer<MapData>
     {
-        public int Compare(string x, string y)
+        public int Compare(MapData x, MapData y)
         {
+            if (x == null && y == null)
+                return 0;
             if (x == null)
                 return 1;
             if (y == null)
                 return -1;
-            return MapNameToIndex(x).CompareTo(MapNameToIndex(y));
+            return MapNameToLevel(x.NameInternal).CompareTo(MapNameToLevel(y.NameInternal));
         }
 
-        public static int MapNameToIndex(string name)
+        public static int MapNameToLevel(string name)
         {
-            int index = Array.IndexOf(MapData.MapNames, name) + 1;
-            return index;
-        }
-        public static int MapDescENToIndex(string name)
-        {
-            int index = Array.IndexOf(MapData.MapsDescEN, name) + 1;
-            return index;
+            return MapData.MapsLevels.TryGetValue(name, out var index) ? index : 0;
         }
     }
 }

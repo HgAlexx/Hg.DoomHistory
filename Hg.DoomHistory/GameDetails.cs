@@ -169,7 +169,7 @@ namespace Hg.DoomHistory
         [ReadOnly(true)]
         [Category("Saved Game Details")]
         [DisplayName("Saved At")]
-        public DateTime Time { get; set; }
+        public DateTime SaveDateTime { get; set; }
 
         [Browsable(true)]
         [ReadOnly(true)]
@@ -213,12 +213,12 @@ namespace Hg.DoomHistory
 
                     if (values[0] == "date")
                     {
-                        Time = DateTime.Now;
+                        SaveDateTime = DateTime.Now;
                         if (int.TryParse(values[1], out var unix))
-                        {
-                            Time = DateTimeOffset.FromUnixTimeSeconds(unix).LocalDateTime;
-                            DateTimeSafe = Time.ToString("yyyy-MM-dd HH.mm.ss");
-                            DateTimeString = Time.ToString("yyyy-MM-dd HH:mm:ss");
+                        {                            
+                            SaveDateTime = DateTimeOffset.FromUnixTimeSeconds(unix).LocalDateTime;
+                            DateTimeSafe = SaveDateTime.ToString("yyyy-MM-dd HH.mm.ss");
+                            DateTimeString = SaveDateTime.ToString("yyyy-MM-dd HH:mm:ss");
                         }
                     }
 

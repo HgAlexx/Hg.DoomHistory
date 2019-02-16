@@ -42,8 +42,11 @@
             this.folderBrowserDialogSavedGames = new System.Windows.Forms.FolderBrowserDialog();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageSlot1 = new System.Windows.Forms.TabPage();
+            this.slotControl1 = new Hg.DoomHistory.SlotControl();
             this.tabPageSlot2 = new System.Windows.Forms.TabPage();
+            this.slotControl2 = new Hg.DoomHistory.SlotControl();
             this.tabPageSlot3 = new System.Windows.Forms.TabPage();
+            this.slotControl3 = new Hg.DoomHistory.SlotControl();
             this.folderBrowserDialogBackup = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTipHelp = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -59,9 +62,6 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListMessageType = new System.Windows.Forms.ImageList(this.components);
-            this.slotControl1 = new Hg.DoomHistory.SlotControl();
-            this.slotControl2 = new Hg.DoomHistory.SlotControl();
-            this.slotControl3 = new Hg.DoomHistory.SlotControl();
             this.groupBoxGlobalConf.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageSlot1.SuspendLayout();
@@ -201,16 +201,32 @@
             this.tabPageSlot1.Text = "Slot 1";
             this.tabPageSlot1.UseVisualStyleBackColor = true;
             // 
+            // slotControl1
+            // 
+            this.slotControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.slotControl1.Location = new System.Drawing.Point(3, 3);
+            this.slotControl1.Name = "slotControl1";
+            this.slotControl1.Size = new System.Drawing.Size(795, 433);
+            this.slotControl1.TabIndex = 0;
+            // 
             // tabPageSlot2
             // 
             this.tabPageSlot2.Controls.Add(this.slotControl2);
             this.tabPageSlot2.Location = new System.Drawing.Point(4, 22);
             this.tabPageSlot2.Name = "tabPageSlot2";
             this.tabPageSlot2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSlot2.Size = new System.Drawing.Size(677, 354);
+            this.tabPageSlot2.Size = new System.Drawing.Size(801, 439);
             this.tabPageSlot2.TabIndex = 1;
             this.tabPageSlot2.Text = "Slot 2";
             this.tabPageSlot2.UseVisualStyleBackColor = true;
+            // 
+            // slotControl2
+            // 
+            this.slotControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.slotControl2.Location = new System.Drawing.Point(3, 3);
+            this.slotControl2.Name = "slotControl2";
+            this.slotControl2.Size = new System.Drawing.Size(795, 433);
+            this.slotControl2.TabIndex = 0;
             // 
             // tabPageSlot3
             // 
@@ -218,10 +234,18 @@
             this.tabPageSlot3.Location = new System.Drawing.Point(4, 22);
             this.tabPageSlot3.Name = "tabPageSlot3";
             this.tabPageSlot3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSlot3.Size = new System.Drawing.Size(677, 354);
+            this.tabPageSlot3.Size = new System.Drawing.Size(801, 439);
             this.tabPageSlot3.TabIndex = 2;
             this.tabPageSlot3.Text = "Slot 3";
             this.tabPageSlot3.UseVisualStyleBackColor = true;
+            // 
+            // slotControl3
+            // 
+            this.slotControl3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.slotControl3.Location = new System.Drawing.Point(3, 3);
+            this.slotControl3.Name = "slotControl3";
+            this.slotControl3.Size = new System.Drawing.Size(795, 433);
+            this.slotControl3.TabIndex = 0;
             // 
             // toolTipHelp
             // 
@@ -335,30 +359,6 @@
             this.imageListMessageType.Images.SetKeyName(1, "messagebox-information.png");
             this.imageListMessageType.Images.SetKeyName(2, "messagebox-question.png");
             this.imageListMessageType.Images.SetKeyName(3, "messagebox-exclamation.png");
-            // 
-            // slotControl1
-            // 
-            this.slotControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.slotControl1.Location = new System.Drawing.Point(3, 3);
-            this.slotControl1.Name = "slotControl1";
-            this.slotControl1.Size = new System.Drawing.Size(795, 433);
-            this.slotControl1.TabIndex = 0;
-            // 
-            // slotControl2
-            // 
-            this.slotControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.slotControl2.Location = new System.Drawing.Point(3, 3);
-            this.slotControl2.Name = "slotControl2";
-            this.slotControl2.Size = new System.Drawing.Size(671, 348);
-            this.slotControl2.TabIndex = 0;
-            // 
-            // slotControl3
-            // 
-            this.slotControl3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.slotControl3.Location = new System.Drawing.Point(3, 3);
-            this.slotControl3.Name = "slotControl3";
-            this.slotControl3.Size = new System.Drawing.Size(671, 348);
-            this.slotControl3.TabIndex = 0;
             // 
             // FormMain
             // 
