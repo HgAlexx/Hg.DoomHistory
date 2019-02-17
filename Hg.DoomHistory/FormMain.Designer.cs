@@ -58,12 +58,12 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.messageBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusBarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importExistingBackupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.clearSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListMessageType = new System.Windows.Forms.ImageList(this.components);
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.importExistingBackupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxGlobalConf.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageSlot1.SuspendLayout();
@@ -322,16 +322,28 @@
             // messageBoxToolStripMenuItem
             // 
             this.messageBoxToolStripMenuItem.Name = "messageBoxToolStripMenuItem";
-            this.messageBoxToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.messageBoxToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.messageBoxToolStripMenuItem.Text = "Message box";
             this.messageBoxToolStripMenuItem.Click += new System.EventHandler(this.messageBoxToolStripMenuItem_Click);
             // 
             // statusBarToolStripMenuItem
             // 
             this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
-            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.statusBarToolStripMenuItem.Text = "Status bar";
             this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.statusBarToolStripMenuItem_Click);
+            // 
+            // importExistingBackupsToolStripMenuItem
+            // 
+            this.importExistingBackupsToolStripMenuItem.Name = "importExistingBackupsToolStripMenuItem";
+            this.importExistingBackupsToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.importExistingBackupsToolStripMenuItem.Text = "Import existing backups";
+            this.importExistingBackupsToolStripMenuItem.Click += new System.EventHandler(this.importExistingBackupsToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(197, 6);
             // 
             // clearSettingsToolStripMenuItem
             // 
@@ -363,18 +375,6 @@
             this.imageListMessageType.Images.SetKeyName(1, "messagebox-information.png");
             this.imageListMessageType.Images.SetKeyName(2, "messagebox-question.png");
             this.imageListMessageType.Images.SetKeyName(3, "messagebox-exclamation.png");
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(197, 6);
-            // 
-            // importExistingBackupsToolStripMenuItem
-            // 
-            this.importExistingBackupsToolStripMenuItem.Name = "importExistingBackupsToolStripMenuItem";
-            this.importExistingBackupsToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.importExistingBackupsToolStripMenuItem.Text = "Import existing backups";
-            this.importExistingBackupsToolStripMenuItem.Click += new System.EventHandler(this.importExistingBackupsToolStripMenuItem_Click);
             // 
             // FormMain
             // 
