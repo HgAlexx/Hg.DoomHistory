@@ -43,3 +43,12 @@ I got the idea while watching [IAmAllstin](https://www.twitch.tv/iamallstin) str
 
 Since I was also planning to do Doom on Ultra-Nightmare, I was going to need a way to back my save files too.
 
+# Version History
+
+## v1.1
+
+\+ New feature: import existing backup folder
+
+## v1.0
+
+\* First public release
