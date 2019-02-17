@@ -62,6 +62,8 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListMessageType = new System.Windows.Forms.ImageList(this.components);
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.importExistingBackupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxGlobalConf.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageSlot1.SuspendLayout();
@@ -301,6 +303,8 @@
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
+            this.importExistingBackupsToolStripMenuItem,
+            this.toolStripSeparator1,
             this.clearSettingsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
@@ -312,27 +316,27 @@
             this.messageBoxToolStripMenuItem,
             this.statusBarToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
-            this.toolStripMenuItem1.Text = "Notification Mode";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(200, 22);
+            this.toolStripMenuItem1.Text = "Notification mode";
             // 
             // messageBoxToolStripMenuItem
             // 
             this.messageBoxToolStripMenuItem.Name = "messageBoxToolStripMenuItem";
-            this.messageBoxToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.messageBoxToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.messageBoxToolStripMenuItem.Text = "Message box";
             this.messageBoxToolStripMenuItem.Click += new System.EventHandler(this.messageBoxToolStripMenuItem_Click);
             // 
             // statusBarToolStripMenuItem
             // 
             this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
-            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.statusBarToolStripMenuItem.Text = "Status bar";
             this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.statusBarToolStripMenuItem_Click);
             // 
             // clearSettingsToolStripMenuItem
             // 
             this.clearSettingsToolStripMenuItem.Name = "clearSettingsToolStripMenuItem";
-            this.clearSettingsToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.clearSettingsToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.clearSettingsToolStripMenuItem.Text = "Clear settings";
             this.clearSettingsToolStripMenuItem.Click += new System.EventHandler(this.clearSettingsToolStripMenuItem_Click);
             // 
@@ -359,6 +363,18 @@
             this.imageListMessageType.Images.SetKeyName(1, "messagebox-information.png");
             this.imageListMessageType.Images.SetKeyName(2, "messagebox-question.png");
             this.imageListMessageType.Images.SetKeyName(3, "messagebox-exclamation.png");
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(197, 6);
+            // 
+            // importExistingBackupsToolStripMenuItem
+            // 
+            this.importExistingBackupsToolStripMenuItem.Name = "importExistingBackupsToolStripMenuItem";
+            this.importExistingBackupsToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.importExistingBackupsToolStripMenuItem.Text = "Import existing backups";
+            this.importExistingBackupsToolStripMenuItem.Click += new System.EventHandler(this.importExistingBackupsToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -425,6 +441,8 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearSettingsToolStripMenuItem;
         private System.Windows.Forms.ImageList imageListMessageType;
+        private System.Windows.Forms.ToolStripMenuItem importExistingBackupsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 

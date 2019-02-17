@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using Hg.DoomHistory.Properties;
 
@@ -345,6 +347,18 @@ namespace Hg.DoomHistory
         {
             About about = new About();
             about.ShowDialog(this);
+        }
+
+        private void importExistingBackupsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormImport import = new FormImport(_backupFolder);
+            import.ShowDialog(this);
+
+            if (import.Imported > 0)
+            {
+                Release();
+                Init();
+            }
         }
     }
 }

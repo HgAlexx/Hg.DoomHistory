@@ -399,7 +399,7 @@ namespace Hg.DoomHistory
                 _slot.listViewSavedGames.Items.Add(listViewItem);
             }
 
-            if (selected > -1)
+            if (selected > -1 && selected < _slot.listViewSavedGames.Items.Count)
                 _slot.listViewSavedGames.SelectedIndices.Add(selected);
 
             _slot.listViewSavedGames.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
