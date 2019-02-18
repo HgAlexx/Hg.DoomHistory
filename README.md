@@ -13,6 +13,7 @@ This tool helps generate Doom saved game backup to practice Ultra-Nightmare and/
 - Distinguish between real checkpoint and death checkpoint (only on auto)
 - Take screenshot on automatic backup (only if Doom is in windowed mode)
 - Attach notes to saves
+- Import existing saved game backup
 
 
 ## Installation
