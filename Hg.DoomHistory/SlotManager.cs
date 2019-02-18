@@ -155,20 +155,21 @@ namespace Hg.DoomHistory
 
         private void ContextMenuStripListViewOnItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            GameDetails gameDetails = GetSelectedGameDetails();
-            if (gameDetails != null)
+            _slot.contextMenuStripListView.Hide();
+            if (e.ClickedItem == _slot.toolStripMenuItemRestore)
             {
-                if (e.ClickedItem == _slot.toolStripMenuItemRestore)
-                {
-                    ButtonRestoreOnClick(sender, null);
-                }
+                ButtonRestoreOnClick(sender, null);
+            }
 
-                if (e.ClickedItem == _slot.toolStripMenuItemDelete)
-                {
-                    ButtonDeleteOnClick(sender, null);
-                }
+            if (e.ClickedItem == _slot.toolStripMenuItemDelete)
+            {
+                ButtonDeleteOnClick(sender, null);
+            }
 
-                if (e.ClickedItem == _slot.toolStripMenuItemEdit)
+            if (e.ClickedItem == _slot.toolStripMenuItemEdit)
+            {
+                GameDetails gameDetails = GetSelectedGameDetails();
+                if (gameDetails != null)
                 {
                     FormNotes formNotes = new FormNotes {textBoxNotes = {Text = gameDetails.Notes}};
                     if (formNotes.ShowDialog(_slot) == DialogResult.OK)
