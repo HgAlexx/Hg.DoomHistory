@@ -150,6 +150,19 @@ namespace Hg.DoomHistory
                                 fileInfo.CopyTo(Path.Combine(target.FullName, file.Name), true);
                             }
 
+                            // Try to recover death, notes and screenshot if possible
+                            if (directoryInfo.Parent != null && directoryInfo.Parent.Name == timeStampFolderName)
+                            {
+                                string timeStampSourcePath = directoryInfo.Parent.FullName;
+                                
+                                CheckAndCopy(timeStampSourcePath, ".hg.death", pathTimeStamp);
+                                CheckAndCopy(timeStampSourcePath, ".hg.notes", pathTimeStamp);
+
+                                CheckAndCopy(timeStampSourcePath, timeStampFolderName + ".gif", pathTimeStamp);
+                                CheckAndCopy(timeStampSourcePath, timeStampFolderName + ".jpg", pathTimeStamp);
+                                CheckAndCopy(timeStampSourcePath, timeStampFolderName + ".png", pathTimeStamp);
+                            }
+
                             Imported++;
                             break;
                         }
@@ -175,6 +188,15 @@ namespace Hg.DoomHistory
             }
             catch (Exception)
             {
+                // Don't log, recursive function!
+            }
+        }
+
+        private static void CheckAndCopy(string timeStampSourcePath, string filename, string pathTimeStamp)
+        {
+            if (File.Exists(Path.Combine(timeStampSourcePath, filename)))
+            {
+                File.Copy(Path.Combine(timeStampSourcePath, filename), Path.Combine(pathTimeStamp, filename));
             }
         }
 

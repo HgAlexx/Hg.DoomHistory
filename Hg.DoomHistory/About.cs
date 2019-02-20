@@ -9,12 +9,11 @@ namespace Hg.DoomHistory
         public About()
         {
             InitializeComponent();
-            this.Text = String.Format("About {0}", AssemblyTitle);
-            this.labelProductName.Text = AssemblyProduct;
-            this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
-            this.labelCopyright.Text = AssemblyCopyright;
-            this.labelCompanyName.Text = AssemblyCompany;
-            this.textBoxDescription.Text = AssemblyDescription;
+            labelProductName.Text = AssemblyProduct;
+            labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
+            labelCopyright.Text = AssemblyCopyright;
+            labelCompanyName.Text = AssemblyTrademark;
+            textBoxDescription.Text = AssemblyDescription;
         }
 
         #region Accesseurs d'attribut de l'assembly
@@ -40,7 +39,8 @@ namespace Hg.DoomHistory
         {
             get
             {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                Version version = Assembly.GetExecutingAssembly().GetName().Version;
+                return string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Revision);
             }
         }
 
@@ -83,16 +83,16 @@ namespace Hg.DoomHistory
             }
         }
 
-        public string AssemblyCompany
+        public string AssemblyTrademark
         {
             get
             {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
+                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTrademarkAttribute), false);
                 if (attributes.Length == 0)
                 {
                     return "";
                 }
-                return ((AssemblyCompanyAttribute)attributes[0]).Company;
+                return ((AssemblyTrademarkAttribute)attributes[0]).Trademark;
             }
         }
         #endregion
@@ -100,6 +100,11 @@ namespace Hg.DoomHistory
         private void labelCopyright_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(labelCopyright.Text);
+        }
+
+        private void About_Load(object sender, EventArgs e)
+        {
+            Text = String.Format("About {0}", AssemblyTitle);
         }
     }
 }

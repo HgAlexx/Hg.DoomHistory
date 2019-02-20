@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
+using System.Net;
+using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Forms;
 using Hg.DoomHistory.Properties;
 
@@ -13,26 +13,35 @@ namespace Hg.DoomHistory
     {
         private string _backupFolder;
         private MessageMode _notificationMode;
+        private ScreenshotQuality _screenshotQuality;
         private string _savedGameFolder;
 
         private SlotManager _slot1;
         private SlotManager _slot2;
         private SlotManager _slot3;
 
+        private readonly Version _version;
+
+        private FormDebugConsole _debugConsole;
+
         public FormMain()
         {
             InitializeComponent();
+            _version = Assembly.GetExecutingAssembly().GetName().Version;
         }
 
         private void LoadSettings()
         {
-            Settings.Default.Upgrade();
-
             _savedGameFolder = Settings.Default.SavedGameFolder;
             _backupFolder = Settings.Default.BackupFolder;
             _notificationMode = (MessageMode) Settings.Default.NotificationMode;
+            _screenshotQuality = (ScreenshotQuality) Settings.Default.ScreenshotQuality;
+
             if (_notificationMode == MessageMode.None)
                 _notificationMode = MessageMode.MessageBox;
+
+            if (_screenshotQuality == ScreenshotQuality.None)
+                _screenshotQuality = ScreenshotQuality.Jpg;
 
             if (!Directory.Exists(_savedGameFolder))
             {
@@ -57,22 +66,38 @@ namespace Hg.DoomHistory
             Settings.Default.BackupFolder = _backupFolder;
             Settings.Default.SavedGameFolder = _savedGameFolder;
             Settings.Default.NotificationMode = (int) _notificationMode;
+            Settings.Default.ScreenshotQuality = (int) _screenshotQuality;
 
             Settings.Default.Save();
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            string versionFormatted = string.Format("v{0}.{1}.{2}", _version.Major, _version.Minor, _version.Revision);
+            Text += @" " + versionFormatted;
+
+            // Needed only once per launch
+            Settings.Default.Upgrade();
+            Settings.Default.Save();
+
             Init();
         }
 
         private void Init()
         {
             LoadSettings();
+
             buttonBackupFolderOpen.Enabled = IsBackupFolderValid();
+            
             messageBoxToolStripMenuItem.Checked = _notificationMode == MessageMode.MessageBox;
             statusBarToolStripMenuItem.Checked = _notificationMode == MessageMode.Status;
+
+            giflowSizeToolStripMenuItem.Checked = _screenshotQuality == ScreenshotQuality.Gif;
+            jpgmediumToolStripMenuItem.Checked = _screenshotQuality == ScreenshotQuality.Jpg;
+            pnghugeSizeToolStripMenuItem.Checked = _screenshotQuality == ScreenshotQuality.Png;
+
             Message("Ready", "", MessageType.Information, MessageMode.Status);
+            
             CreateSlots();
         }
 
@@ -162,6 +187,8 @@ namespace Hg.DoomHistory
             _slot1 = new SlotManager(slotControl1, 1, _savedGameFolder, _backupFolder, Message);
             _slot2 = new SlotManager(slotControl2, 2, _savedGameFolder, _backupFolder, Message);
             _slot3 = new SlotManager(slotControl3, 3, _savedGameFolder, _backupFolder, Message);
+
+            SetScreenshotQuality();
         }
 
         private void ReleaseSlots()
@@ -301,8 +328,10 @@ namespace Hg.DoomHistory
             {
                 Process.Start(_backupFolder);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Log("ButtonBackupFolderOpen_Click: Exception: " + ex.Message, LogLevel.Debug);
+                Logger.LogException(ex);
             }
         }
 
@@ -359,6 +388,110 @@ namespace Hg.DoomHistory
                 Release();
                 Init();
             }
+        }
+        
+        private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string responseString = null;
+            try
+            {
+                // We'll get all release for now and change this to latest when a proper release is made
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.github.com/repos/HgAlexx/Hg.DoomHistory/releases");
+                request.UserAgent = "HgAlexx/Hg.DoomHistory";
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Stream stream = response.GetResponseStream();
+                    if (stream != null)
+                        responseString = new StreamReader(stream).ReadToEnd();
+                }    
+            }
+            catch (Exception)
+            {
+            }
+
+            if (!string.IsNullOrEmpty(responseString))
+            {
+                Version maxVesion = _version;
+                try
+                {
+                    // Fast and ugly way to parse the json response from the github api.. just to not add one dependency to the project
+                    Regex regex = new Regex(@"""tag_name"":""v([0-9.]+)"",");
+                    Match match = regex.Match(responseString);
+
+                    while (match.Success)
+                    {
+                        Version v = new Version(match.Groups[1].Value);
+                        if (v > _version)
+                            if (v > maxVesion)
+                                maxVesion = v;
+                        match = match.NextMatch();
+                    }
+                }
+                catch (Exception)
+                {
+                }
+
+                if (maxVesion > _version)
+                {
+                    if (Message("A new version is available, do you want to open the release page?", "New version available!", MessageType.Question, MessageMode.MessageBox) == DialogResult.Yes)
+                    {
+                        Process.Start("https://github.com/HgAlexx/Hg.DoomHistory/releases");
+                    }
+                }
+                else
+                {
+                    Message(@"No new version found", @"You are up-to-date", MessageType.Information, MessageMode.User); 
+                }
+            }
+            else
+            {
+                Message(@"Unable to check for a new version, please try again later", @"Hmm :(", MessageType.Information, MessageMode.User); 
+            }
+        }
+
+        private void giflowSizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _screenshotQuality = ScreenshotQuality.Gif;
+            giflowSizeToolStripMenuItem.Checked = true;
+            jpgmediumToolStripMenuItem.Checked = false;
+            pnghugeSizeToolStripMenuItem.Checked = false;
+            SetScreenshotQuality();
+        }
+
+        private void jpgmediumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _screenshotQuality = ScreenshotQuality.Jpg;
+            giflowSizeToolStripMenuItem.Checked = false;
+            jpgmediumToolStripMenuItem.Checked = true;
+            pnghugeSizeToolStripMenuItem.Checked = false;
+            SetScreenshotQuality();
+        }
+
+        private void pnghugeSizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _screenshotQuality = ScreenshotQuality.Png;
+            giflowSizeToolStripMenuItem.Checked = false;
+            jpgmediumToolStripMenuItem.Checked = false;
+            pnghugeSizeToolStripMenuItem.Checked = true;
+            SetScreenshotQuality();
+        }
+
+        private void SetScreenshotQuality()
+        {
+            _slot1?.SetScreenshotQuality(_screenshotQuality);
+            _slot2?.SetScreenshotQuality(_screenshotQuality);
+            _slot3?.SetScreenshotQuality(_screenshotQuality);
+        }
+
+        private void debugConsoleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_debugConsole == null)
+            {
+                _debugConsole = new FormDebugConsole();
+            }
+            _debugConsole.Show(this);
         }
     }
 }

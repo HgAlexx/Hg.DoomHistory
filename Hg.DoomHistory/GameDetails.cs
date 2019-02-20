@@ -252,6 +252,10 @@ namespace Hg.DoomHistory
             {
                 MapSafe = MapSafe.Replace(invalidPathChar, ' ');
             }
+            
+            int levelNumber = MapComparer.MapNameToLevel(MapName);
+            if (levelNumber > 0)
+                MapSafe = (levelNumber.ToString().PadRight(2) + " - ") + MapSafe;
         }
     }
 }

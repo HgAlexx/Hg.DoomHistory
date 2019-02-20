@@ -13,6 +13,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -28,7 +29,6 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,6 +39,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -96,6 +97,19 @@
     <Compile Include="About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExceptionHandler.cs" />
+    <Compile Include="FormDebugConsole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDebugConsole.Designer.cs">
+      <DependentUpon>FormDebugConsole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormException.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormException.Designer.cs">
+      <DependentUpon>FormException.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormImport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,12 +129,16 @@
       <DependentUpon>FormNotes.cs</DependentUpon>
     </Compile>
     <Compile Include="GameDetails.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="MapComparer.cs" />
     <Compile Include="MapData.cs" />
+    <Compile Include="MessageMode.cs" />
     <Compile Include="MessageType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenShot.cs" />
+    <Compile Include="ScreenshotQuality.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SlotControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -131,6 +149,12 @@
     <Compile Include="TimeStampComparer.cs" />
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDebugConsole.resx">
+      <DependentUpon>FormDebugConsole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormException.resx">
+      <DependentUpon>FormException.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormImport.resx">
       <DependentUpon>FormImport.cs</DependentUpon>

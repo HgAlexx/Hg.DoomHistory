@@ -24,10 +24,10 @@ namespace Hg.DoomHistory
 
         public readonly List<GameDetails> Games = new List<GameDetails>();
 
-        public MapData(string parentPath, string name)
+        public MapData(string parentPath, string name, string nameSafe)
         {
             Name = name;
-            NameSafe = Name;
+            NameSafe = nameSafe;
 
             foreach (char invalidPathChar in System.IO.Path.GetInvalidPathChars())
             {

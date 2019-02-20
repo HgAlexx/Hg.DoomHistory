@@ -55,15 +55,22 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importExistingBackupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.messageBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusBarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importExistingBackupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.screenshotsQualityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.jpgmediumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.giflowSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pnghugeSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.clearSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkForUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListMessageType = new System.Windows.Forms.ImageList(this.components);
+            this.debugConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.groupBoxGlobalConf.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageSlot1.SuspendLayout();
@@ -295,20 +302,30 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
             this.importExistingBackupsToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.screenshotsQualityToolStripMenuItem,
             this.toolStripSeparator1,
-            this.clearSettingsToolStripMenuItem});
+            this.clearSettingsToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.debugConsoleToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // importExistingBackupsToolStripMenuItem
+            // 
+            this.importExistingBackupsToolStripMenuItem.Name = "importExistingBackupsToolStripMenuItem";
+            this.importExistingBackupsToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.importExistingBackupsToolStripMenuItem.Text = "Import existing backups";
+            this.importExistingBackupsToolStripMenuItem.Click += new System.EventHandler(this.importExistingBackupsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -333,12 +350,36 @@
             this.statusBarToolStripMenuItem.Text = "Status bar";
             this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.statusBarToolStripMenuItem_Click);
             // 
-            // importExistingBackupsToolStripMenuItem
+            // screenshotsQualityToolStripMenuItem
             // 
-            this.importExistingBackupsToolStripMenuItem.Name = "importExistingBackupsToolStripMenuItem";
-            this.importExistingBackupsToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.importExistingBackupsToolStripMenuItem.Text = "Import existing backups";
-            this.importExistingBackupsToolStripMenuItem.Click += new System.EventHandler(this.importExistingBackupsToolStripMenuItem_Click);
+            this.screenshotsQualityToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.jpgmediumToolStripMenuItem,
+            this.giflowSizeToolStripMenuItem,
+            this.pnghugeSizeToolStripMenuItem});
+            this.screenshotsQualityToolStripMenuItem.Name = "screenshotsQualityToolStripMenuItem";
+            this.screenshotsQualityToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.screenshotsQualityToolStripMenuItem.Text = "Screenshots quality";
+            // 
+            // jpgmediumToolStripMenuItem
+            // 
+            this.jpgmediumToolStripMenuItem.Name = "jpgmediumToolStripMenuItem";
+            this.jpgmediumToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.jpgmediumToolStripMenuItem.Text = "Jpg (small size)";
+            this.jpgmediumToolStripMenuItem.Click += new System.EventHandler(this.jpgmediumToolStripMenuItem_Click);
+            // 
+            // giflowSizeToolStripMenuItem
+            // 
+            this.giflowSizeToolStripMenuItem.Name = "giflowSizeToolStripMenuItem";
+            this.giflowSizeToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.giflowSizeToolStripMenuItem.Text = "Gif (medium size)";
+            this.giflowSizeToolStripMenuItem.Click += new System.EventHandler(this.giflowSizeToolStripMenuItem_Click);
+            // 
+            // pnghugeSizeToolStripMenuItem
+            // 
+            this.pnghugeSizeToolStripMenuItem.Name = "pnghugeSizeToolStripMenuItem";
+            this.pnghugeSizeToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.pnghugeSizeToolStripMenuItem.Text = "Png (huge size)";
+            this.pnghugeSizeToolStripMenuItem.Click += new System.EventHandler(this.pnghugeSizeToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -355,15 +396,23 @@
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkForUpdateToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
+            // checkForUpdateToolStripMenuItem
+            // 
+            this.checkForUpdateToolStripMenuItem.Name = "checkForUpdateToolStripMenuItem";
+            this.checkForUpdateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.checkForUpdateToolStripMenuItem.Text = "Check for update";
+            this.checkForUpdateToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdateToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -375,6 +424,18 @@
             this.imageListMessageType.Images.SetKeyName(1, "messagebox-information.png");
             this.imageListMessageType.Images.SetKeyName(2, "messagebox-question.png");
             this.imageListMessageType.Images.SetKeyName(3, "messagebox-exclamation.png");
+            // 
+            // debugConsoleToolStripMenuItem
+            // 
+            this.debugConsoleToolStripMenuItem.Name = "debugConsoleToolStripMenuItem";
+            this.debugConsoleToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.debugConsoleToolStripMenuItem.Text = "Open debug console";
+            this.debugConsoleToolStripMenuItem.Click += new System.EventHandler(this.debugConsoleToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(197, 6);
             // 
             // FormMain
             // 
@@ -443,6 +504,13 @@
         private System.Windows.Forms.ImageList imageListMessageType;
         private System.Windows.Forms.ToolStripMenuItem importExistingBackupsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem checkForUpdateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem screenshotsQualityToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem giflowSizeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem jpgmediumToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pnghugeSizeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem debugConsoleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }
 

@@ -11,20 +11,12 @@ using System.Windows.Forms;
 
 namespace Hg.DoomHistory
 {
-    public enum MessageMode
-    {
-        None,
-        User,
-        MessageBox,
-        Status
-    }
-
     public delegate DialogResult MessageEventHandler(string text, string caption, MessageType type, MessageMode mode);
 
     public class SlotManager
     {
-        private const string ScreenShotExtension = ".jpg";
-        private static readonly ImageFormat ScreenShotFormat = ImageFormat.Jpeg;
+        private string _screenShotExtension = ".jpg";
+        private ImageFormat _screenShotFormat = ImageFormat.Jpeg;
 
         private readonly string _backupFolder;
         private readonly int _id;
@@ -62,6 +54,9 @@ namespace Hg.DoomHistory
             _pathSlot = Path.Combine(_backupFolder, "Slot" + _id);
 
             SlotName = "Slot " + _id;
+
+            // Default to jpg
+            SetScreenshotQuality(ScreenshotQuality.Jpg);
 
             UnloadControl();
 
@@ -532,13 +527,13 @@ namespace Hg.DoomHistory
             _slot.checkBoxIncludeDeath.Checked = _includeDeath;
         }
 
-        private MapData CheckAndGetMapData(string mapName)
+        private MapData CheckAndGetMapData(string mapName, string mapNameSafe)
         {
-            MapData mapData = _maps.FirstOrDefault(o => o.NameSafe == mapName || o.Name == mapName);
+            MapData mapData = _maps.FirstOrDefault(o => o.NameSafe == mapNameSafe || o.Name == mapName);
 
             if (mapData == null)
             {
-                mapData = new MapData(_pathSlot, mapName);
+                mapData = new MapData(_pathSlot, mapName, mapNameSafe);
                 _maps.Add(mapData);
             }
 
@@ -580,9 +575,6 @@ namespace Hg.DoomHistory
             // loop through maps
             foreach (DirectoryInfo directoryMap in directoryInfo.GetDirectories())
             {
-                string mapNameSafe = directoryMap.Name;
-                MapData mapData = CheckAndGetMapData(mapNameSafe);
-
                 // loop through timestamps
                 foreach (DirectoryInfo directoryTimeStamp in directoryMap.GetDirectories())
                 {
@@ -599,6 +591,8 @@ namespace Hg.DoomHistory
                             GameDetails gameDetails = new GameDetails(_id, content);
                             gameDetails.SetPath(timeStampPath);
 
+                            MapData mapData = CheckAndGetMapData(gameDetails.MapDesc, gameDetails.MapSafe);
+
                             if (string.IsNullOrEmpty(mapData.NameInternal))
                                 mapData.NameInternal = gameDetails.MapName;
 
@@ -606,12 +600,30 @@ namespace Hg.DoomHistory
                             if (File.Exists(markerFile))
                                 gameDetails.IsDeath = true;
 
-                            string screenshotsFile = Path.Combine(timeStampPath,
-                                directoryTimeStamp.Name + ScreenShotExtension);
+                            string screenshotsFile = Path.Combine(timeStampPath, directoryTimeStamp.Name + ".jpg");
                             if (File.Exists(screenshotsFile))
                             {
                                 gameDetails.HasScreenshots = true;
                                 gameDetails.ScreenshotsPath = screenshotsFile;
+                            }
+                            else if (!gameDetails.HasScreenshots)
+                            {
+                                screenshotsFile = Path.Combine(timeStampPath, directoryTimeStamp.Name + ".png");
+                                if (File.Exists(screenshotsFile))
+                                {
+                                    gameDetails.HasScreenshots = true;
+                                    gameDetails.ScreenshotsPath = screenshotsFile;
+                                }
+
+                            }
+                            else if (!gameDetails.HasScreenshots)
+                            {
+                                screenshotsFile = Path.Combine(timeStampPath, directoryTimeStamp.Name + ".gif");
+                                if (File.Exists(screenshotsFile))
+                                {
+                                    gameDetails.HasScreenshots = true;
+                                    gameDetails.ScreenshotsPath = screenshotsFile;
+                                }
                             }
 
                             CheckAndUpdateGameDetails(mapData, directoryTimeStamp.Name, gameDetails);
@@ -623,15 +635,21 @@ namespace Hg.DoomHistory
 
         private bool BackupSave(bool isDeath)
         {
+            Logger.Log("Slot " + _id + ", BackupSave: Enter", LogLevel.Debug);
+
             string pathSave = Path.Combine(_savedGameFolder, "GAME-AUTOSAVE" + (_id - 1));
             if (!Directory.Exists(pathSave))
             {
+                Logger.Log("Slot " + _id + ", BackupSave: pathSave does not exist", LogLevel.Debug);
                 return false;
             }
 
             string gameDetailsFilePath = Path.Combine(pathSave, "game.details");
             if (!File.Exists(gameDetailsFilePath))
+            {
+                Logger.Log("Slot " + _id + ", BackupSave: gameDetailsFilePath does not exist", LogLevel.Debug);
                 return false;
+            }
 
             string gameDetailsContent = File.ReadAllText(gameDetailsFilePath);
             GameDetails gameDetails = new GameDetails(_id, gameDetailsContent) {IsDeath = isDeath};
@@ -663,34 +681,39 @@ namespace Hg.DoomHistory
                 File.WriteAllText(markerFile, @"甘き死よ、来たれ");
             }
 
-            IntPtr doomPtr = GetDoomPtr();
-            if (doomPtr != IntPtr.Zero)
+            if (_screenshot)
             {
-                try
+                IntPtr doomPtr = GetDoomPtr();
+                if (doomPtr != IntPtr.Zero)
                 {
-                    string screenshotsFile = Path.Combine(pathTimeStamp, timeStampFolderName + ScreenShotExtension);
-                    if (ScreenShots.HasTitlebar(doomPtr))
+                    Logger.Log("Slot " + _id + ", BackupSave: Doom is running", LogLevel.Debug);
+                    try
                     {
-                        Thread.Sleep(250);
-                        Bitmap bitmap = ScreenShots.Take(doomPtr);
-                        bitmap.Save(screenshotsFile, ScreenShotFormat);
-                        gameDetails.HasScreenshots = true;
-                        gameDetails.ScreenshotsPath = screenshotsFile;
+                        string screenshotsFile = Path.Combine(pathTimeStamp, timeStampFolderName + _screenShotExtension);
+                        if (ScreenShots.HasTitlebar(doomPtr))
+                        {
+                            Thread.Sleep(250);
+                            Bitmap bitmap = ScreenShots.Take(doomPtr);
+                            bitmap.Save(screenshotsFile, _screenShotFormat);
+                            gameDetails.HasScreenshots = true;
+                            gameDetails.ScreenshotsPath = screenshotsFile;
+                        }
                     }
-                }
-                catch (Exception)
-                {
-                    gameDetails.HasScreenshots = false;
-                    gameDetails.ScreenshotsPath = "";
+                    catch (Exception)
+                    {
+                        gameDetails.HasScreenshots = false;
+                        gameDetails.ScreenshotsPath = "";
+                    }
                 }
             }
 
-            MapData mapData = CheckAndGetMapData(gameDetails.MapSafe);
+            MapData mapData = CheckAndGetMapData(gameDetails.MapDesc, gameDetails.MapSafe);
             if (string.IsNullOrEmpty(mapData.NameInternal))
                 mapData.NameInternal = gameDetails.MapName;
 
             CheckAndUpdateGameDetails(mapData, timeStampFolderName, gameDetails);
 
+            Logger.Log("Slot " + _id + ", BackupSave: Exit", LogLevel.Debug);
             return true;
         }
 
@@ -699,7 +722,7 @@ namespace Hg.DoomHistory
             IntPtr doomPtr = IntPtr.Zero;
             foreach (Process process in Process.GetProcesses())
             {
-                if (process.ProcessName == ("DOOMx64") || process.ProcessName == "DOMMx64vk")
+                if (process.ProcessName == ("DOOMx64") || process.ProcessName == "DOOMx64vk")
                 {
                     doomPtr = process.MainWindowHandle;
                     break;
@@ -716,8 +739,10 @@ namespace Hg.DoomHistory
                 Directory.Delete(sourcePath, true);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Log("Slot " + _id + ", DeleteSave: Exception: " + ex.Message, LogLevel.Debug);
+                Logger.LogException(ex);
                 return false;
             }
         }
@@ -816,6 +841,7 @@ namespace Hg.DoomHistory
                 // End of save event
                 if (e.Name == "game.details.verify")
                 {
+                    Logger.Log("Slot " + _id + ", SaveWatcherOnRenamed: game.details.verify event", LogLevel.Debug);
                     if (_isCheckPoint)
                     {
                         // Normal checkpoint (usually)
@@ -837,17 +863,41 @@ namespace Hg.DoomHistory
                     _isCheckPointAlt = false;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Log("Slot " + _id + ", SaveWatcherOnRenamed: Exception: " + ex.Message, LogLevel.Debug);
+                Logger.LogException(ex);
+            }
+        }
+
+        public void SetScreenshotQuality(ScreenshotQuality screenshotQuality)
+        {
+            switch (screenshotQuality)
+            {
+                case ScreenshotQuality.Gif:
+                    _screenShotExtension = ".gif";
+                    _screenShotFormat = ImageFormat.Gif;
+                    break;
+                case ScreenshotQuality.Jpg:
+                    _screenShotExtension = ".jpg";
+                    _screenShotFormat = ImageFormat.Jpeg;
+                    break;
+                case ScreenshotQuality.Png:
+                    _screenShotExtension = ".png";
+                    _screenShotFormat = ImageFormat.Png;
+                    break;
             }
         }
 
         private bool SetWatcher(bool activate)
         {
+            Logger.Log("Slot " + _id + ", SetWatcher: Enter", LogLevel.Debug);
+
             _watcherActive = false;
             string pathSave = Path.Combine(_savedGameFolder, "GAME-AUTOSAVE" + (_id - 1));
             if (!Directory.Exists(pathSave))
             {
+                Logger.Log("Slot " + _id + ", SetWatcher: _savedGameFolder does not exist: " + pathSave, LogLevel.Debug);
                 return false;
             }
 
@@ -855,6 +905,7 @@ namespace Hg.DoomHistory
             {
                 if (_fileSystemWatcher == null)
                 {
+                    Logger.Log("Slot " + _id + ", SetWatcher: _fileSystemWatcher is null", LogLevel.Debug);
                     _fileSystemWatcher = new FileSystemWatcher
                     {
                         Path = pathSave,
@@ -863,28 +914,36 @@ namespace Hg.DoomHistory
                         NotifyFilter = NotifyFilters.FileName
                     };
                     _fileSystemWatcher.Renamed += SaveWatcherOnRenamed;
+                    Logger.Log("Slot " + _id + ", SetWatcher: _fileSystemWatcher created", LogLevel.Debug);
                 }
 
                 if (activate)
                 {
+                    Logger.Log("Slot " + _id + ", SetWatcher: activating", LogLevel.Debug);
                     _isCheckPoint = false;
                     _isCheckPointAlt = false;
                     _fileSystemWatcher.EnableRaisingEvents = true;
                     _watcherActive = true;
+                    Logger.Log("Slot " + _id + ", SetWatcher: activated", LogLevel.Debug);
                 }
                 else
                 {
+                    Logger.Log("Slot " + _id + ", SetWatcher: deactivating", LogLevel.Debug);
                     _fileSystemWatcher.EnableRaisingEvents = false;
                     _isCheckPoint = false;
                     _isCheckPointAlt = false;
                     _watcherActive = false;
+                    Logger.Log("Slot " + _id + ", SetWatcher: deactivated", LogLevel.Debug);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Log("Slot " + _id + ", SetWatcher: Exception: " + ex.Message, LogLevel.Debug);
+                Logger.LogException(ex);
                 return false;
             }
 
+            Logger.Log("Slot " + _id + ", SetWatcher: Exit Success", LogLevel.Debug);
             return true;
         }
     }

@@ -25,16 +25,39 @@ Just unzip and run executable!
 ## Setup
 ### Global settings
 
-- Set the path to "Saved Games Folder" using "Browse" or "Auto Detect"
-- Set the path to "Backup Folder", this is where the app will backup your saved games files
-- You're done!
+#### "Saved Games Folder"
+Set the path to "Saved Games Folder" using "Browse" or "Auto Detect", to point to the Doom save folder.
+Usually something like that:
+C:\Users\<username>\Saved Games\id Software\DOOM\base\savegame.user\<some big number>
+
+#### "Backup Folder"
+Set the path to "Backup Folder", this is where the application will backup your saved games files.
+You probably want to point to a empty folder.
+
+#### You're done!
 
 ## Usage
 ### Slot configuration
 
-- Auto Backup: check this to enable auto backup
+- Auto Backup: check this to enable auto backup for this slot
 - Include death: auto backup upon death
 - Screenshot: take a screenshot upon auto backup
+
+> Note that each slot use its separated configuration !
+> Be sure to enable auto backup for the slot you are using !
+
+### Menu
+#### File
+- "Exit": close the application
+#### Tools
+- "Import existing backups": this allow you to import any saves game you already have into the application
+- "Notification mode": this allow you to choose between messagebox or statusbar notification
+- "Screenshot quality": this allow you to choose between gif, jpg or png format
+- "Clear settings": this will reset the global settings (folders, notification mode and screenshot quality)
+- "Open debug console": for debug purpose only
+#### Help
+- "Check for update": this will check online for new release
+- "About": Provide cuteness, and also some information about the application
 
 ## About
 
@@ -46,10 +69,18 @@ Since I was also planning to do Doom on Ultra-Nightmare, I was going to need a w
 
 # Version History
 
+## v1.2
+
+- \+ Add check for update
+- \+ Add screenshot quality settings
+- \+ Add exception handler and a report form in case of error
+- \* Add level number in from of map folder name
+- \* Various bugs fixes and improvements
+
 ## v1.1
 
-\+ New feature: import existing backup folder
+- \+ New feature: import existing backup folder
 
 ## v1.0
 
-\* First public release
+- \* First public release

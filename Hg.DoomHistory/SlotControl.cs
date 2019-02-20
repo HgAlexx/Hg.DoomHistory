@@ -11,7 +11,7 @@ namespace Hg.DoomHistory
             InitializeComponent();
         }
 
-        private void pictureBoxScreenshot_DoubleClick(object sender, System.EventArgs e)
+        private void pictureBoxScreenshot_DoubleClick(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(pictureBoxScreenshot.ImageLocation))
             {
@@ -19,8 +19,10 @@ namespace Hg.DoomHistory
                 {
                     Process.Start(pictureBoxScreenshot.ImageLocation);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.Log("pictureBoxScreenshot_DoubleClick: Exception: " + ex.Message, LogLevel.Debug);
+                    Logger.LogException(ex);
                 }
             }
         }
