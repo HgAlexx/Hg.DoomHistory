@@ -67,6 +67,9 @@ I got the idea while watching [IAmAllstin](https://www.twitch.tv/iamallstin) str
 
 Since I was also planning to do Doom on Ultra-Nightmare, I was going to need a way to back my save files too.
 
+The first beta tester was [RedW4rr10r](https://www.twitch.tv/redw4rr10r) who found the first bug and made good improvements suggestions.
+
+
 # Version History
 
 ## v1.2
