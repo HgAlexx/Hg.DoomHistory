@@ -150,7 +150,7 @@ namespace Hg.DoomHistory
                                 fileInfo.CopyTo(Path.Combine(target.FullName, file.Name), true);
                             }
 
-                            // Try to recover death, notes and screenshot if possible
+                            // Try to recover death, notes and screenshots if possible
                             if (directoryInfo.Parent != null && directoryInfo.Parent.Name == timeStampFolderName)
                             {
                                 string timeStampSourcePath = directoryInfo.Parent.FullName;

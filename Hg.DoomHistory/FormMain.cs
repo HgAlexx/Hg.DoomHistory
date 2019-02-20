@@ -76,10 +76,6 @@ namespace Hg.DoomHistory
             string versionFormatted = string.Format("v{0}.{1}.{2}", _version.Major, _version.Minor, _version.Revision);
             Text += @" " + versionFormatted;
 
-            // Needed only once per launch
-            Settings.Default.Upgrade();
-            Settings.Default.Save();
-
             Init();
         }
 
