@@ -72,6 +72,10 @@ The first beta tester was [RedW4rr10r](https://www.twitch.tv/redw4rr10r) who fou
 
 # Version History
 
+## v1.2.1
+
+- \* Fixes & Cleanup
+
 ## v1.2
 
 - \+ Add check for update
