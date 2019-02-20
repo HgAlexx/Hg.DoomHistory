@@ -188,7 +188,7 @@ namespace Hg.DoomHistory
 
         public void SetPath(string parentPath)
         {
-            Path = parentPath; //System.IO.Path.Combine(parentPath, DateTimeSafe);
+            Path = parentPath;
         }
 
         public static string DiffToString(int value)
@@ -215,7 +215,7 @@ namespace Hg.DoomHistory
                     {
                         SaveDateTime = DateTime.Now;
                         if (int.TryParse(values[1], out var unix))
-                        {                            
+                        {
                             SaveDateTime = DateTimeOffset.FromUnixTimeSeconds(unix).LocalDateTime;
                             DateTimeSafe = SaveDateTime.ToString("yyyy-MM-dd HH.mm.ss");
                             DateTimeString = SaveDateTime.ToString("yyyy-MM-dd HH:mm:ss");
@@ -252,10 +252,10 @@ namespace Hg.DoomHistory
             {
                 MapSafe = MapSafe.Replace(invalidPathChar, ' ');
             }
-            
+
             int levelNumber = MapComparer.MapNameToLevel(MapName);
             if (levelNumber > 0)
-                MapSafe = (levelNumber.ToString().PadRight(2) + " - ") + MapSafe;
+                MapSafe = levelNumber.ToString().PadRight(2) + " - " + MapSafe;
         }
     }
 }

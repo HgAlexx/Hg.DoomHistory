@@ -7,13 +7,14 @@ namespace Hg.DoomHistory
 {
     public partial class FormDebugConsole : Form
     {
+        private List<string> _logs;
+
         public FormDebugConsole()
         {
             InitializeComponent();
             comboBoxLevel.SelectedIndex = 3; // Debug by default
         }
 
-        private List<string> _logs;
         private void OnLogEvent()
         {
             _logs = Logger.GetLogs();
@@ -28,6 +29,7 @@ namespace Hg.DoomHistory
             {
                 listViewLog.Items.Add(_logs[i]);
             }
+
             listViewLog.EndUpdate();
         }
 
@@ -84,13 +86,14 @@ namespace Hg.DoomHistory
                 Logger.OnLog -= OnLogEvent;
             }
             catch (Exception)
-            {}
+            {
+            }
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-            
+
             if (folderBrowserDialog.ShowDialog(this) == DialogResult.OK)
             {
                 string filePath = Path.Combine(folderBrowserDialog.SelectedPath, "Hg.DoomHistory.log");

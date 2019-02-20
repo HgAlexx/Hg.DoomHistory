@@ -1,6 +1,7 @@
 ﻿//
 // File imported from my old Hg.Common project
 //
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,10 +18,10 @@ namespace Hg.DoomHistory
         public static LogMode ExceptionMode = LogMode.Debug;
         public static LogLevel Level = LogLevel.Error;
 
-        public static bool Enabled { get; set; }
-
-        private static readonly object LogEntriesLock = new  object();
+        private static readonly object LogEntriesLock = new object();
         private static readonly List<string> LogEntries = new List<string>();
+
+        public static bool Enabled { get; set; }
 
         public static event LogEvent OnLog;
 
@@ -46,6 +47,7 @@ namespace Hg.DoomHistory
                 {
                     LogEntries.Add(fullMessage);
                 }
+
                 OnLog?.Invoke();
             }
         }
@@ -73,6 +75,7 @@ namespace Hg.DoomHistory
                 formException.ErrorDetails += Environment.NewLine;
                 formException.ErrorDetails += exception.ToString();
             }
+
             if (formException.ShowDialog() == DialogResult.Cancel)
             {
                 Application.Exit(new CancelEventArgs());
@@ -92,8 +95,9 @@ namespace Hg.DoomHistory
         {
             lock (LogEntriesLock)
             {
-                LogEntries.Clear();   
+                LogEntries.Clear();
             }
+
             OnLog?.Invoke();
         }
     }
@@ -106,6 +110,7 @@ namespace Hg.DoomHistory
         Information,
         Debug
     }
+
     public enum LogMode
     {
         None,

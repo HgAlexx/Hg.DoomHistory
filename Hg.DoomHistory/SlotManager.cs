@@ -15,9 +15,6 @@ namespace Hg.DoomHistory
 
     public class SlotManager
     {
-        private string _screenShotExtension = ".jpg";
-        private ImageFormat _screenShotFormat = ImageFormat.Jpeg;
-
         private readonly string _backupFolder;
         private readonly int _id;
 
@@ -36,6 +33,8 @@ namespace Hg.DoomHistory
         private bool _isCheckPoint;
         private bool _isCheckPointAlt;
         private bool _screenshot;
+        private string _screenShotExtension = ".jpg";
+        private ImageFormat _screenShotFormat = ImageFormat.Jpeg;
 
         private SlotControl _slot;
 
@@ -238,10 +237,7 @@ namespace Hg.DoomHistory
                     ListViewItem selectedItem = _slot.listViewSavedGames.SelectedItems[i];
                     if (selectedItem.Tag is GameDetails gameDetails)
                     {
-                        string pathMap = Path.Combine(_pathSlot, gameDetails.MapSafe);
-                        string timeStampFolderName = gameDetails.DateTimeSafe;
-                        string pathTimeStamp = Path.Combine(pathMap, timeStampFolderName);
-
+                        string pathTimeStamp = gameDetails.Path;
                         if (DeleteSave(pathTimeStamp))
                         {
                             if (mapData.Games.Contains(gameDetails))
@@ -262,10 +258,12 @@ namespace Hg.DoomHistory
                 }
                 else
                 {
-                    RefreshLisView(mapData);
                     Message("The deletion has been successful, " + ok + " items deleted", "Deletion complete",
                         MessageType.Information, MessageMode.User);
                 }
+
+                // Refresh listview
+                RefreshLisView(mapData);
             }
         }
 
@@ -614,7 +612,6 @@ namespace Hg.DoomHistory
                                     gameDetails.HasScreenshots = true;
                                     gameDetails.ScreenshotsPath = screenshotsFile;
                                 }
-
                             }
                             else if (!gameDetails.HasScreenshots)
                             {
@@ -689,7 +686,8 @@ namespace Hg.DoomHistory
                     Logger.Log("Slot " + _id + ", BackupSave: Doom is running", LogLevel.Debug);
                     try
                     {
-                        string screenshotsFile = Path.Combine(pathTimeStamp, timeStampFolderName + _screenShotExtension);
+                        string screenshotsFile =
+                            Path.Combine(pathTimeStamp, timeStampFolderName + _screenShotExtension);
                         if (ScreenShots.HasTitlebar(doomPtr))
                         {
                             Thread.Sleep(250);
@@ -722,7 +720,7 @@ namespace Hg.DoomHistory
             IntPtr doomPtr = IntPtr.Zero;
             foreach (Process process in Process.GetProcesses())
             {
-                if (process.ProcessName == ("DOOMx64") || process.ProcessName == "DOOMx64vk")
+                if (process.ProcessName == "DOOMx64" || process.ProcessName == "DOOMx64vk")
                 {
                     doomPtr = process.MainWindowHandle;
                     break;
@@ -736,7 +734,11 @@ namespace Hg.DoomHistory
         {
             try
             {
-                Directory.Delete(sourcePath, true);
+                if (Directory.Exists(sourcePath))
+                {
+                    Directory.Delete(sourcePath, true);
+                }
+
                 return true;
             }
             catch (Exception ex)
@@ -751,6 +753,11 @@ namespace Hg.DoomHistory
         {
             string pathSave = Path.Combine(_savedGameFolder, "GAME-AUTOSAVE" + (_id - 1));
             if (!Directory.Exists(pathSave))
+            {
+                return false;
+            }
+
+            if (!Directory.Exists(sourcePath))
             {
                 return false;
             }
@@ -828,7 +835,10 @@ namespace Hg.DoomHistory
                 // Fail-safe: check if Doom is running for auto-backup
                 IntPtr doomPtr = GetDoomPtr();
                 if (doomPtr == IntPtr.Zero)
+                {
+                    Logger.Log("Slot " + _id + ", SaveWatcherOnRenamed: Change detected but Doom is not running :(", LogLevel.Debug);
                     return;
+                }
 
                 // Mostly in case of death
                 if (e.Name == "checkpoint_alt.dat")
@@ -897,7 +907,8 @@ namespace Hg.DoomHistory
             string pathSave = Path.Combine(_savedGameFolder, "GAME-AUTOSAVE" + (_id - 1));
             if (!Directory.Exists(pathSave))
             {
-                Logger.Log("Slot " + _id + ", SetWatcher: _savedGameFolder does not exist: " + pathSave, LogLevel.Debug);
+                Logger.Log("Slot " + _id + ", SetWatcher: _savedGameFolder does not exist: " + pathSave,
+                    LogLevel.Debug);
                 return false;
             }
 

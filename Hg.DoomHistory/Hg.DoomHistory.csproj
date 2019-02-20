@@ -51,13 +51,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>omg.ico</ApplicationIcon>
+    <ApplicationIcon>img\omg.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Hg.DoomHistory.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Hg.DoomHistory.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>F922201B434B3CBF14E488C67F7BE6B9056EA9FE</ManifestCertificateThumbprint>
@@ -71,11 +71,12 @@
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -178,8 +179,7 @@
     <EmbeddedResource Include="SlotControl.resx">
       <DependentUpon>SlotControl.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Hg.DoomHistory.snk" />
-    <None Include="Hg.DoomHistory_TemporaryKey.pfx" />
+    <None Include="Hg.DoomHistory.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
@@ -195,9 +195,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="omg.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.1">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.7.1 %28x86 et x64%29</ProductName>
@@ -208,6 +205,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="img\omg.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

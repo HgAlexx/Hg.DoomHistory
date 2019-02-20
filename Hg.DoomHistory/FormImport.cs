@@ -154,7 +154,7 @@ namespace Hg.DoomHistory
                             if (directoryInfo.Parent != null && directoryInfo.Parent.Name == timeStampFolderName)
                             {
                                 string timeStampSourcePath = directoryInfo.Parent.FullName;
-                                
+
                                 CheckAndCopy(timeStampSourcePath, ".hg.death", pathTimeStamp);
                                 CheckAndCopy(timeStampSourcePath, ".hg.notes", pathTimeStamp);
 

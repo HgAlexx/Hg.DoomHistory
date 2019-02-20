@@ -11,18 +11,17 @@ namespace Hg.DoomHistory
 {
     public partial class FormMain : Form
     {
+        private readonly Version _version;
         private string _backupFolder;
+
+        private FormDebugConsole _debugConsole;
         private MessageMode _notificationMode;
-        private ScreenshotQuality _screenshotQuality;
         private string _savedGameFolder;
+        private ScreenshotQuality _screenshotQuality;
 
         private SlotManager _slot1;
         private SlotManager _slot2;
         private SlotManager _slot3;
-
-        private readonly Version _version;
-
-        private FormDebugConsole _debugConsole;
 
         public FormMain()
         {
@@ -73,7 +72,7 @@ namespace Hg.DoomHistory
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            string versionFormatted = string.Format("v{0}.{1}.{2}", _version.Major, _version.Minor, _version.Revision);
+            string versionFormatted = $"v{_version.Major}.{_version.Minor}.{_version.Build}";
             Text += @" " + versionFormatted;
 
             Init();
@@ -84,7 +83,7 @@ namespace Hg.DoomHistory
             LoadSettings();
 
             buttonBackupFolderOpen.Enabled = IsBackupFolderValid();
-            
+
             messageBoxToolStripMenuItem.Checked = _notificationMode == MessageMode.MessageBox;
             statusBarToolStripMenuItem.Checked = _notificationMode == MessageMode.Status;
 
@@ -93,7 +92,7 @@ namespace Hg.DoomHistory
             pnghugeSizeToolStripMenuItem.Checked = _screenshotQuality == ScreenshotQuality.Png;
 
             Message("Ready", "", MessageType.Information, MessageMode.Status);
-            
+
             CreateSlots();
         }
 
@@ -385,23 +384,24 @@ namespace Hg.DoomHistory
                 Init();
             }
         }
-        
+
         private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string responseString = null;
             try
             {
                 // We'll get all release for now and change this to latest when a proper release is made
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.github.com/repos/HgAlexx/Hg.DoomHistory/releases");
+                HttpWebRequest request =
+                    (HttpWebRequest) WebRequest.Create("https://api.github.com/repos/HgAlexx/Hg.DoomHistory/releases");
                 request.UserAgent = "HgAlexx/Hg.DoomHistory";
 
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                HttpWebResponse response = (HttpWebResponse) request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     Stream stream = response.GetResponseStream();
                     if (stream != null)
                         responseString = new StreamReader(stream).ReadToEnd();
-                }    
+                }
             }
             catch (Exception)
             {
@@ -431,19 +431,21 @@ namespace Hg.DoomHistory
 
                 if (maxVesion > _version)
                 {
-                    if (Message("A new version is available, do you want to open the release page?", "New version available!", MessageType.Question, MessageMode.MessageBox) == DialogResult.Yes)
+                    if (Message("A new version is available, do you want to open the release page?",
+                            "New version available!", MessageType.Question, MessageMode.MessageBox) == DialogResult.Yes)
                     {
                         Process.Start("https://github.com/HgAlexx/Hg.DoomHistory/releases");
                     }
                 }
                 else
                 {
-                    Message(@"No new version found", @"You are up-to-date", MessageType.Information, MessageMode.User); 
+                    Message(@"No new version found", @"You are up-to-date", MessageType.Information, MessageMode.User);
                 }
             }
             else
             {
-                Message(@"Unable to check for a new version, please try again later", @"Hmm :(", MessageType.Information, MessageMode.User); 
+                Message(@"Unable to check for a new version, please try again later", @"Hmm :(",
+                    MessageType.Information, MessageMode.User);
             }
         }
 
@@ -487,6 +489,7 @@ namespace Hg.DoomHistory
             {
                 _debugConsole = new FormDebugConsole();
             }
+
             _debugConsole.Show(this);
         }
     }

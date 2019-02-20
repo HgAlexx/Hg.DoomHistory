@@ -1,19 +1,31 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
 namespace Hg.DoomHistory
 {
-    partial class About : Form
+    internal partial class About : Form
     {
         public About()
         {
             InitializeComponent();
             labelProductName.Text = AssemblyProduct;
-            labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
+            labelVersion.Text = string.Format("Version {0}", AssemblyVersion);
             labelCopyright.Text = AssemblyCopyright;
             labelCompanyName.Text = AssemblyTrademark;
             textBoxDescription.Text = AssemblyDescription;
+        }
+
+        private void labelCopyright_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(labelCopyright.Text);
+        }
+
+        private void About_Load(object sender, EventArgs e)
+        {
+            Text = $@"About {AssemblyTitle}";
         }
 
         #region Accesseurs d'attribut de l'assembly
@@ -22,16 +34,18 @@ namespace Hg.DoomHistory
         {
             get
             {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
+                object[] attributes = Assembly.GetExecutingAssembly()
+                    .GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
                 if (attributes.Length > 0)
                 {
-                    AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
+                    AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute) attributes[0];
                     if (titleAttribute.Title != "")
                     {
                         return titleAttribute.Title;
                     }
                 }
-                return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+
+                return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
             }
         }
 
@@ -40,7 +54,7 @@ namespace Hg.DoomHistory
             get
             {
                 Version version = Assembly.GetExecutingAssembly().GetName().Version;
-                return string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Revision);
+                return $@"{version.Major}.{version.Minor}.{version.Build}";
             }
         }
 
@@ -48,12 +62,14 @@ namespace Hg.DoomHistory
         {
             get
             {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
+                object[] attributes = Assembly.GetExecutingAssembly()
+                    .GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
                 if (attributes.Length == 0)
                 {
                     return "";
                 }
-                return ((AssemblyDescriptionAttribute)attributes[0]).Description;
+
+                return ((AssemblyDescriptionAttribute) attributes[0]).Description;
             }
         }
 
@@ -61,12 +77,14 @@ namespace Hg.DoomHistory
         {
             get
             {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+                object[] attributes = Assembly.GetExecutingAssembly()
+                    .GetCustomAttributes(typeof(AssemblyProductAttribute), false);
                 if (attributes.Length == 0)
                 {
                     return "";
                 }
-                return ((AssemblyProductAttribute)attributes[0]).Product;
+
+                return ((AssemblyProductAttribute) attributes[0]).Product;
             }
         }
 
@@ -74,12 +92,14 @@ namespace Hg.DoomHistory
         {
             get
             {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+                object[] attributes = Assembly.GetExecutingAssembly()
+                    .GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
                 if (attributes.Length == 0)
                 {
                     return "";
                 }
-                return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
+
+                return ((AssemblyCopyrightAttribute) attributes[0]).Copyright;
             }
         }
 
@@ -87,24 +107,17 @@ namespace Hg.DoomHistory
         {
             get
             {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTrademarkAttribute), false);
+                object[] attributes = Assembly.GetExecutingAssembly()
+                    .GetCustomAttributes(typeof(AssemblyTrademarkAttribute), false);
                 if (attributes.Length == 0)
                 {
                     return "";
                 }
-                return ((AssemblyTrademarkAttribute)attributes[0]).Trademark;
+
+                return ((AssemblyTrademarkAttribute) attributes[0]).Trademark;
             }
         }
+
         #endregion
-
-        private void labelCopyright_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start(labelCopyright.Text);
-        }
-
-        private void About_Load(object sender, EventArgs e)
-        {
-            Text = String.Format("About {0}", AssemblyTitle);
-        }
     }
 }

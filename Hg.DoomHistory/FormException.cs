@@ -1,6 +1,7 @@
 ﻿//
 // File imported from my old Hg.Common project
 //
+
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -9,12 +10,13 @@ namespace Hg.DoomHistory
 {
     public partial class FormException : Form
     {
+        private string _errorDetails = "";
+
         public FormException()
         {
             InitializeComponent();
         }
 
-        private string _errorDetails = "";
         public string ErrorDetails
         {
             get => _errorDetails;
