@@ -59,6 +59,22 @@ You probably want to point to a empty folder.
 - "Check for update": this will check online for new release
 - "About": Provide cuteness, and also some information about the application
 
+## F.A.Q.
+
+#### Why auto-backup is not working?
+
+- Be sure you properly set both the "Saved Game Folder" and the "Backup Folder"
+- Be sure that you checked the box for the slot you are playing on, this settings is per slot.
+- Auto back can fail to start in rare occasion when you start a game on a empty slot, wait for the first checkpoint, restart the application and check the auto backup box again.
+
+#### Why are my screenshots black or showing the Doom escape menu?
+
+The screenshot feature works only if you play the game in windowed mode (with border) due to technical limitation.
+
+#### Why are my screenshots bluring?
+
+To improve the quality of the screenshots, decrease the quality on the settings "Motion blur" in Doom Video settings.
+
 ## About
 
 This is not the prettiest source code in the world, I've made this software over the course of a week and there is still a lot of room for improvements.
