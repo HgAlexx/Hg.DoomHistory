@@ -55,9 +55,9 @@
             // 
             this.buttonContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonContinue.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonContinue.Location = new System.Drawing.Point(447, 12);
+            this.buttonContinue.Location = new System.Drawing.Point(401, 12);
             this.buttonContinue.Name = "buttonContinue";
-            this.buttonContinue.Size = new System.Drawing.Size(98, 23);
+            this.buttonContinue.Size = new System.Drawing.Size(144, 23);
             this.buttonContinue.TabIndex = 1;
             this.buttonContinue.Text = "Continue";
             this.buttonContinue.UseVisualStyleBackColor = true;
@@ -66,11 +66,11 @@
             // 
             this.buttonExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonExit.Location = new System.Drawing.Point(447, 70);
+            this.buttonExit.Location = new System.Drawing.Point(401, 70);
             this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(98, 23);
+            this.buttonExit.Size = new System.Drawing.Size(144, 23);
             this.buttonExit.TabIndex = 2;
-            this.buttonExit.Text = "Exit";
+            this.buttonExit.Text = "Exit Application";
             this.buttonExit.UseVisualStyleBackColor = true;
             // 
             // label1
@@ -81,7 +81,7 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(12, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(429, 81);
+            this.label1.Size = new System.Drawing.Size(383, 81);
             this.label1.TabIndex = 3;
             this.label1.Text = "An unexpected error occurred :( \r\nPlease report the error details to the author:\r" +
     "\n- Open an issue on Github\r\n- Send a DM to mZHg on discord";
@@ -90,12 +90,11 @@
             // buttonGithub
             // 
             this.buttonGithub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonGithub.Enabled = false;
-            this.buttonGithub.Location = new System.Drawing.Point(447, 41);
+            this.buttonGithub.Location = new System.Drawing.Point(401, 41);
             this.buttonGithub.Name = "buttonGithub";
-            this.buttonGithub.Size = new System.Drawing.Size(98, 23);
+            this.buttonGithub.Size = new System.Drawing.Size(144, 23);
             this.buttonGithub.TabIndex = 4;
-            this.buttonGithub.Text = "Open Github";
+            this.buttonGithub.Text = "Open Github Issue";
             this.buttonGithub.UseVisualStyleBackColor = true;
             this.buttonGithub.Click += new System.EventHandler(this.buttonSend_Click);
             // 
