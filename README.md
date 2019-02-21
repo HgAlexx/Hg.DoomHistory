@@ -74,7 +74,9 @@ The first beta tester was [RedW4rr10r](https://www.twitch.tv/redw4rr10r) who fou
 
 ## v1.2.1
 
-- \* Fixes & Cleanup
+- \* Fix a issue with auto backup not starting if the save folder does not exists
+- \* Other fixes
+- \* Code Cleanup
 
 ## v1.2
 
