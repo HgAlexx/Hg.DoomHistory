@@ -71,7 +71,7 @@ You probably want to point to a empty folder.
 
 The screenshot feature works only if you play the game in windowed mode (with border) due to technical limitation.
 
-#### Why are my screenshots bluring?
+#### Why are my screenshots blurry?
 
 To improve the quality of the screenshots, decrease the quality on the settings "Motion blur" in Doom Video settings.
 
