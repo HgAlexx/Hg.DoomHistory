@@ -35,11 +35,11 @@ namespace Hg.DoomHistory
 
         public static void Log(string message, LogLevel level)
         {
-            string fullMessage = DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss] ") + level + ": " + message;
-            Debug.WriteLine(fullMessage);
-
             if (!Enabled)
                 return;
+
+            string fullMessage = DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss] ") + level + ": " + message;
+            Debug.WriteLine(fullMessage);
 
             if (level <= Level)
             {

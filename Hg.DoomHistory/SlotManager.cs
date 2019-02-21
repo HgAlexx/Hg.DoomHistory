@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Hg.DoomHistory
@@ -73,6 +74,7 @@ namespace Hg.DoomHistory
         private DialogResult Message(string text, string caption, MessageType type, MessageMode mode)
         {
             string msg = SlotName + ": " + text;
+            Logger.Log(text, LogLevel.Debug);
             if (OnMessage != null)
             {
                 return OnMessage(msg, caption, type, mode);
@@ -424,7 +426,25 @@ namespace Hg.DoomHistory
                 }
                 else
                 {
-                    Message("Auto backup failed to start", "Hmm :(", MessageType.Information, MessageMode.User);
+                    if (_autoBackup)
+                    {
+                        if (_watchWantToStart)
+                        {
+                            Message("Auto backup will start after the first checkpoint", "", MessageType.Warning, MessageMode.User);
+                        }
+                        else
+                        {
+                            _autoBackup = false;
+                            _slot.checkBoxAutoBackup.Checked = false;
+                            Message("Auto backup failed to start", "Hmm :(", MessageType.Error, MessageMode.User);
+                        }
+                    }
+                    else
+                    {
+                        _autoBackup = true;
+                        _slot.checkBoxAutoBackup.Checked = true;
+                        Message("Auto backup failed to stop", "Hmm :(", MessageType.Error, MessageMode.User);
+                    }
                 }
             }
         }
@@ -899,6 +919,21 @@ namespace Hg.DoomHistory
             }
         }
 
+
+        private bool _watchWantToStart = false;
+
+        private void CheckIfWatcherCanStart(string pathSave)
+        {
+            if (Directory.Exists(pathSave))
+            {
+                _watchWantToStart = false;
+                if (SetWatcher(true))
+                    SetAutoBackupMessage();
+            }
+        }
+
+        private Task _waiterTask = null;
+
         private bool SetWatcher(bool activate)
         {
             Logger.Log("Slot " + _id + ", SetWatcher: Enter", LogLevel.Debug);
@@ -907,9 +942,32 @@ namespace Hg.DoomHistory
             string pathSave = Path.Combine(_savedGameFolder, "GAME-AUTOSAVE" + (_id - 1));
             if (!Directory.Exists(pathSave))
             {
-                Logger.Log("Slot " + _id + ", SetWatcher: _savedGameFolder does not exist: " + pathSave,
-                    LogLevel.Debug);
-                return false;
+                Logger.Log("Slot " + _id + ", SetWatcher: _savedGameFolder does not exist: " + pathSave, LogLevel.Debug);
+
+                if (activate)
+                {
+                    _watchWantToStart = true;
+                    if (_waiterTask == null)
+                    {
+                        _waiterTask = new Task(() =>
+                        {
+                            while (_watchWantToStart)
+                            {
+                                CheckIfWatcherCanStart(pathSave);
+                                Thread.Sleep(1000);
+                            }
+                        });
+                        _waiterTask.Start();
+                    }
+                    return false;
+                }
+                else
+                {
+                    _watchWantToStart = false;
+                    _waiterTask.Wait();
+                    _waiterTask = null;
+                    return true;
+                }
             }
 
             try
