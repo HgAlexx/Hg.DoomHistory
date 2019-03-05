@@ -4,14 +4,16 @@ This tool helps generate Doom saved game backup to practice Ultra-Nightmare and/
 
 ## Features
 
+- **New: Hot keys!**
+- **New: Sound notifications**
 - Auto detect Doom saved games folder (will try its best)
 - Manual backup
 - Manual restore
 - Manual delete
 - Sort backup by slot, map and date
 - Automatic backup on checkpoint
-- Distinguish between real checkpoint and death checkpoint (only on auto)
-- Take screenshot on automatic backup (only if Doom is in windowed mode)
+- Distinguish between real checkpoint and death checkpoint (on auto only)
+- Can take screenshot on automatic backup (only if Doom is in windowed mode)
 - Attach notes to saves
 - Import existing saved game backup
 
@@ -39,9 +41,11 @@ You probably want to point to a empty folder.
 ## Usage
 ### Slot configuration
 
-- Auto Backup: check this to enable auto backup for this slot
-- Include death: auto backup upon death
-- Screenshot: take a screenshot upon auto backup
+- "Auto Backup": check this to enable auto backup for this slot
+- "Include death": auto backup upon death
+- "Screenshot": take a screenshot upon auto backup
+- "Sound notification on auto backup": play a sound on successful or failed backup
+- "Auto select last backup save": Highlight the backup save in the list view
 
 > Note that each slot use its separated configuration !
 > Be sure to enable auto backup for the slot you are using !
@@ -49,11 +53,17 @@ You probably want to point to a empty folder.
 ### Menu
 #### File
 - "Exit": close the application
-#### Tools
-- "Import existing backups": this allow you to import any saves game you already have into the application
+#### Settings
+- "Hot keys":
+  - "Enabled": Active or deactive the hot keys
+  - "Sound on restore": Play a sound on successful or failed restoration
+  - "Assign hot keys": Open the hot keys settings window
 - "Notification mode": this allow you to choose between messagebox or statusbar notification
+- "Saves sort order": Sort list view by date ascending or descending
 - "Screenshot quality": this allow you to choose between gif, jpg or png format
 - "Clear settings": this will reset the global settings (folders, notification mode and screenshot quality)
+#### Tools
+- "Import existing backups": this allow you to import any saves game you already have into the application
 - "Open debug console": for debug purpose only
 #### Help
 - "Check for update": this will check online for new release
@@ -87,6 +97,14 @@ The first beta tester was [RedW4rr10r](https://www.twitch.tv/redw4rr10r) who fou
 
 
 # Version History
+
+## v1.3.0
+
+- \+ New Feature: Hot Keys!
+- \+ New Feature: Sound Notification
+- \* Bug Fixes
+- \* Lots of Improvements
+- \* Code Refactoring and Cleanup
 
 ## v1.2.1
 
