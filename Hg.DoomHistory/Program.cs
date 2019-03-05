@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Windows.Forms;
+using Hg.DoomHistory.Forms;
+using Hg.DoomHistory.Utilities;
 
 namespace Hg.DoomHistory
 {
     internal static class Program
     {
+        #region Members
+
         [STAThread]
         private static void Main()
         {
@@ -19,5 +23,7 @@ namespace Hg.DoomHistory
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
         }
+
+        #endregion
     }
 }

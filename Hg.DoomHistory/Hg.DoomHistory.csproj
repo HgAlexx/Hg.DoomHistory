@@ -51,7 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>img\omg.ico</ApplicationIcon>
+    <ApplicationIcon>Images\omg.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -72,6 +72,9 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -86,82 +89,106 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="About.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="About.Designer.cs">
-      <DependentUpon>About.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ExceptionHandler.cs" />
-    <Compile Include="FormDebugConsole.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormDebugConsole.Designer.cs">
-      <DependentUpon>FormDebugConsole.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormException.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormException.Designer.cs">
-      <DependentUpon>FormException.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormImport.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormImport.Designer.cs">
-      <DependentUpon>FormImport.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormMain.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormMain.Designer.cs">
-      <DependentUpon>FormMain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormNotes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormNotes.Designer.cs">
-      <DependentUpon>FormNotes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GameDetails.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="MapComparer.cs" />
-    <Compile Include="MapData.cs" />
-    <Compile Include="MessageMode.cs" />
-    <Compile Include="MessageType.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenShot.cs" />
-    <Compile Include="ScreenshotQuality.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="SlotControl.cs">
+    <Compile Include="Controls\HotKeyControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SlotControl.Designer.cs">
+    <Compile Include="Controls\HotKeyControl.Designer.cs">
+      <DependentUpon>HotKeyControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSettingsHotKeys.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSettingsHotKeys.Designer.cs">
+      <DependentUpon>FormSettingsHotKeys.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Managers\BackupManager.cs" />
+    <Compile Include="Types\HotKeyToAction.cs" />
+    <Compile Include="Utilities\ExceptionHandler.cs" />
+    <Compile Include="Forms\FormDebugConsole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormDebugConsole.Designer.cs">
+      <DependentUpon>FormDebugConsole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormException.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormException.Designer.cs">
+      <DependentUpon>FormException.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormImport.Designer.cs">
+      <DependentUpon>FormImport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormNotes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormNotes.Designer.cs">
+      <DependentUpon>FormNotes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Types\GameDetails.cs" />
+    <Compile Include="Types\HotKey.cs" />
+    <Compile Include="Managers\HotKeysManager.cs" />
+    <Compile Include="Utilities\Logger.cs" />
+    <Compile Include="Comparers\MapComparer.cs" />
+    <Compile Include="Types\MapData.cs" />
+    <Compile Include="Types\MessageMode.cs" />
+    <Compile Include="Types\MessageType.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\Screenshot.cs" />
+    <Compile Include="Types\ScreenshotQuality.cs" />
+    <Compile Include="Managers\SettingManager.cs" />
+    <Compile Include="Controls\SlotControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SlotControl.Designer.cs">
       <DependentUpon>SlotControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="SlotManager.cs" />
-    <Compile Include="TimeStampComparer.cs" />
-    <EmbeddedResource Include="About.resx">
+    <Compile Include="Managers\SlotManager.cs" />
+    <Compile Include="Managers\SoundManager.cs" />
+    <Compile Include="Comparers\TimeStampComparer.cs" />
+    <EmbeddedResource Include="Controls\HotKeyControl.resx">
+      <DependentUpon>HotKeyControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormDebugConsole.resx">
+    <EmbeddedResource Include="Forms\FormDebugConsole.resx">
       <DependentUpon>FormDebugConsole.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormException.resx">
+    <EmbeddedResource Include="Forms\FormException.resx">
       <DependentUpon>FormException.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormImport.resx">
+    <EmbeddedResource Include="Forms\FormImport.resx">
       <DependentUpon>FormImport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormMain.resx">
+    <EmbeddedResource Include="Forms\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormNotes.resx">
+    <EmbeddedResource Include="Forms\FormNotes.resx">
       <DependentUpon>FormNotes.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSettingsHotKeys.resx">
+      <DependentUpon>FormSettingsHotKeys.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -170,9 +197,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SlotControl.resx">
+    <EmbeddedResource Include="Controls\SlotControl.resx">
       <DependentUpon>SlotControl.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Sounds\success.wav" />
+    <None Include="Sounds\error.wav" />
     <None Include="Hg.DoomHistory.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -186,7 +215,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.1">
@@ -201,7 +232,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="img\omg.ico" />
+    <Content Include="Images\omg.ico" />
+    <None Include="Sounds\empty.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
