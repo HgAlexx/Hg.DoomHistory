@@ -44,6 +44,12 @@
             this.hkcSaveRestore = new Hg.DoomHistory.Controls.HotKeyControl();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.hkcSaveBackup = new Hg.DoomHistory.Controls.HotKeyControl();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.hkcSaveDelete = new Hg.DoomHistory.Controls.HotKeyControl();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.hkcSwitchAutoBackup = new Hg.DoomHistory.Controls.HotKeyControl();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -51,6 +57,9 @@
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            this.groupBox10.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -182,7 +191,7 @@
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.hkcSaveRestore);
-            this.groupBox7.Location = new System.Drawing.Point(12, 267);
+            this.groupBox7.Location = new System.Drawing.Point(378, 267);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(360, 79);
             this.groupBox7.TabIndex = 6;
@@ -202,8 +211,9 @@
             // 
             // buttonCancel
             // 
+            this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(663, 323);
+            this.buttonCancel.Location = new System.Drawing.Point(662, 442);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 7;
@@ -212,8 +222,9 @@
             // 
             // buttonSave
             // 
+            this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSave.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonSave.Location = new System.Drawing.Point(582, 323);
+            this.buttonSave.Location = new System.Drawing.Point(581, 442);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
             this.buttonSave.TabIndex = 8;
@@ -221,13 +232,79 @@
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.hkcSaveBackup);
+            this.groupBox8.Location = new System.Drawing.Point(12, 267);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(360, 79);
+            this.groupBox8.TabIndex = 9;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Backup Save";
+            // 
+            // hkcSaveBackup
+            // 
+            this.hkcSaveBackup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.hkcSaveBackup.Location = new System.Drawing.Point(6, 19);
+            this.hkcSaveBackup.MaximumSize = new System.Drawing.Size(0, 55);
+            this.hkcSaveBackup.MinimumSize = new System.Drawing.Size(347, 55);
+            this.hkcSaveBackup.Name = "hkcSaveBackup";
+            this.hkcSaveBackup.Size = new System.Drawing.Size(347, 55);
+            this.hkcSaveBackup.TabIndex = 0;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.hkcSaveDelete);
+            this.groupBox9.Location = new System.Drawing.Point(12, 352);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(360, 79);
+            this.groupBox9.TabIndex = 10;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Delete Save";
+            // 
+            // hkcSaveDelete
+            // 
+            this.hkcSaveDelete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.hkcSaveDelete.Location = new System.Drawing.Point(6, 19);
+            this.hkcSaveDelete.MaximumSize = new System.Drawing.Size(0, 55);
+            this.hkcSaveDelete.MinimumSize = new System.Drawing.Size(347, 55);
+            this.hkcSaveDelete.Name = "hkcSaveDelete";
+            this.hkcSaveDelete.Size = new System.Drawing.Size(347, 55);
+            this.hkcSaveDelete.TabIndex = 0;
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.hkcSwitchAutoBackup);
+            this.groupBox10.Location = new System.Drawing.Point(378, 352);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(360, 79);
+            this.groupBox10.TabIndex = 11;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Switch Auto-backup";
+            // 
+            // hkcSwitchAutoBackup
+            // 
+            this.hkcSwitchAutoBackup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.hkcSwitchAutoBackup.Location = new System.Drawing.Point(6, 19);
+            this.hkcSwitchAutoBackup.MaximumSize = new System.Drawing.Size(0, 55);
+            this.hkcSwitchAutoBackup.MinimumSize = new System.Drawing.Size(347, 55);
+            this.hkcSwitchAutoBackup.Name = "hkcSwitchAutoBackup";
+            this.hkcSwitchAutoBackup.Size = new System.Drawing.Size(347, 55);
+            this.hkcSwitchAutoBackup.TabIndex = 0;
+            // 
             // FormSettingsHotKeys
             // 
             this.AcceptButton = this.buttonSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(749, 358);
+            this.ClientSize = new System.Drawing.Size(749, 477);
+            this.Controls.Add(this.groupBox10);
+            this.Controls.Add(this.groupBox9);
+            this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.groupBox7);
@@ -250,6 +327,9 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox10.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -272,5 +352,11 @@
         private Controls.HotKeyControl hkcSaveRestore;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private Controls.HotKeyControl hkcSaveBackup;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private Controls.HotKeyControl hkcSaveDelete;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private Controls.HotKeyControl hkcSwitchAutoBackup;
     }
 }

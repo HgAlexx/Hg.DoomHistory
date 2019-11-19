@@ -162,6 +162,8 @@ namespace Hg.DoomHistory.Forms
             {
                 if (Directory.Exists(folderBrowserDialogBackup.SelectedPath))
                 {
+                    ReleaseSlots();
+
                     _settingManager.BackupFolder = folderBrowserDialogBackup.SelectedPath;
                     SetFolderTextBox(textBoxBackupFolder, _settingManager.BackupFolder);
 
@@ -223,10 +225,8 @@ namespace Hg.DoomHistory.Forms
             try
             {
                 // We'll get all release for now and change this to latest when a proper release is made
-                HttpWebRequest request =
-                    (HttpWebRequest) WebRequest.Create("https://api.github.com/repos/HgAlexx/Hg.DoomHistory/releases");
-                request.UserAgent = "Hg.DoomHistory/" + versionFormatted + " (" + Environment.OSVersion + ") " +
-                                    "By: HgAlexx";
+                HttpWebRequest request = (HttpWebRequest) WebRequest.Create("https://api.github.com/repos/HgAlexx/Hg.DoomHistory/releases");
+                request.UserAgent = "Hg.DoomHistory/" + versionFormatted + " (" + Environment.OSVersion + ") " + "By: HgAlexx";
 
                 HttpWebResponse response = (HttpWebResponse) request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
@@ -273,8 +273,7 @@ namespace Hg.DoomHistory.Forms
 
                 if (maxVersion > _version)
                 {
-                    if (Message("A new version is available, do you want to open the release page?",
-                            "New version available!", MessageType.Question, MessageMode.MessageBox) == DialogResult.Yes)
+                    if (Message("A new version is available, do you want to open the release page?", "New version available!", MessageType.Question, MessageMode.MessageBox) == DialogResult.Yes)
                     {
                         Process.Start("https://github.com/HgAlexx/Hg.DoomHistory/releases");
                     }
@@ -286,19 +285,21 @@ namespace Hg.DoomHistory.Forms
             }
             else
             {
-                Message(@"Unable to check for a new version, please try again later", @"Hmm :(",
-                    MessageType.Information, MessageMode.User);
+                Message(@"Unable to check for a new version, please try again later", @"Hmm :(", MessageType.Information, MessageMode.User);
             }
         }
 
         private void clearSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Message("Are you sure you want to reset all global settings?", "Reset global settings?",
-                    MessageType.Question, MessageMode.MessageBox) == DialogResult.Yes)
+            if (Message("Are you sure you want to reset all global settings?", "Reset global settings?", MessageType.Question, MessageMode.MessageBox) == DialogResult.Yes)
             {
                 Release();
+
                 _settingManager.ResetSettings();
                 _settingManager.SaveSettings();
+
+                CreateHotKeysHook();
+
                 Init();
             }
         }
@@ -413,6 +414,9 @@ namespace Hg.DoomHistory.Forms
             {
                 _hotKeysManager.HotKeys.Add(hotKeyToAction);
             }
+
+            if (_settingManager.HotKeysActive)
+                _hotKeysManager.Hook();
         }
 
         private bool IsBackupFolderValid()
@@ -545,6 +549,7 @@ namespace Hg.DoomHistory.Forms
                         slotManager.MapSelectNext();
                         e.Handled = true;
                         break;
+
                     case HotKeyAction.SaveFirst:
                         slotManager.SaveSelectFirst();
                         e.Handled = true;
@@ -561,8 +566,66 @@ namespace Hg.DoomHistory.Forms
                         slotManager.SaveSelectNext();
                         e.Handled = true;
                         break;
+
                     case HotKeyAction.SaveRestore:
                         if (slotManager.ActionSaveRestore())
+                        {
+                            if (_settingManager.HotKeysSound)
+                            {
+                                SoundManager.PlaySuccess();
+                            }
+                        }
+                        else
+                        {
+                            if (_settingManager.HotKeysSound)
+                            {
+                                SoundManager.PlayError();
+                            }
+                        }
+
+                        e.Handled = true;
+                        break;
+
+                    case HotKeyAction.SaveBackup:
+                        if (slotManager.ActionSaveBackup(false))
+                        {
+                            if (_settingManager.HotKeysSound)
+                            {
+                                SoundManager.PlaySuccess();
+                            }
+                        }
+                        else
+                        {
+                            if (_settingManager.HotKeysSound)
+                            {
+                                SoundManager.PlayError();
+                            }
+                        }
+
+                        e.Handled = true;
+                        break;
+
+                    case HotKeyAction.SaveDelete:
+                        if (slotManager.ActionSaveDelete())
+                        {
+                            if (_settingManager.HotKeysSound)
+                            {
+                                SoundManager.PlaySuccess();
+                            }
+                        }
+                        else
+                        {
+                            if (_settingManager.HotKeysSound)
+                            {
+                                SoundManager.PlayError();
+                            }
+                        }
+
+                        e.Handled = true;
+                        break;
+
+                    case HotKeyAction.SettingSwitchAutoBackup:
+                        if (slotManager.ActionSettingSwitchAutoBackup())
                         {
                             if (_settingManager.HotKeysSound)
                             {
@@ -589,11 +652,17 @@ namespace Hg.DoomHistory.Forms
             {
                 case HotKeyAction.MapPrevious:
                 case HotKeyAction.MapNext:
+
                 case HotKeyAction.SaveFirst:
                 case HotKeyAction.SaveLast:
                 case HotKeyAction.SavePrevious:
                 case HotKeyAction.SaveNext:
+                
                 case HotKeyAction.SaveRestore:
+                case HotKeyAction.SaveBackup:
+                case HotKeyAction.SaveDelete:
+                
+                case HotKeyAction.SettingSwitchAutoBackup:
                     e.Handled = true;
                     break;
             }
@@ -653,10 +722,19 @@ namespace Hg.DoomHistory.Forms
 
         private void setKeysToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormSettingsHotKeys formSettingsHotKeys = new FormSettingsHotKeys(_settingManager.HotKeyToActions);
-            if (formSettingsHotKeys.ShowDialog(this) == DialogResult.OK)
+            var hotkeyStatus = _settingManager.HotKeysActive;
+            _settingManager.HotKeysActive = false;
+            try
             {
-                InitHotKeys();
+                FormSettingsHotKeys formSettingsHotKeys = new FormSettingsHotKeys(_settingManager.HotKeyToActions);
+                if (formSettingsHotKeys.ShowDialog(this) == DialogResult.OK)
+                {
+                    InitHotKeys();
+                }
+            }
+            finally
+            {
+                _settingManager.HotKeysActive = hotkeyStatus;
             }
         }
 

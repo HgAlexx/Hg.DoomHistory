@@ -18,7 +18,7 @@ namespace Hg.DoomHistory.Controls
         {
             InitializeComponent();
 
-            checkBoxEnable.Checked = false;
+            checkBoxEnabled.Checked = false;
             checkBoxAlt.Checked = false;
             checkBoxControl.Checked = false;
             checkBoxShift.Checked = false;
@@ -39,7 +39,7 @@ namespace Hg.DoomHistory.Controls
 
         public void ToHotKeyToAction(HotKeyToAction hotKeyToAction)
         {
-            hotKeyToAction.Enabled = checkBoxEnable.Checked;
+            hotKeyToAction.Enabled = checkBoxEnabled.Checked;
             hotKeyToAction.HotKey.Control = checkBoxControl.Checked;
             hotKeyToAction.HotKey.Alt = checkBoxAlt.Checked;
             hotKeyToAction.HotKey.Shift = checkBoxShift.Checked;
@@ -48,12 +48,12 @@ namespace Hg.DoomHistory.Controls
 
         private void checkBoxEnable_CheckedChanged(object sender, EventArgs e)
         {
-            SetStates(checkBoxEnable.Checked);
+            SetStates(checkBoxEnabled.Checked);
         }
 
         private void SetStates(bool enable)
         {
-            checkBoxEnable.Checked = enable;
+            checkBoxEnabled.Checked = enable;
             checkBoxAlt.Enabled = enable;
             checkBoxControl.Enabled = enable;
             checkBoxShift.Enabled = enable;

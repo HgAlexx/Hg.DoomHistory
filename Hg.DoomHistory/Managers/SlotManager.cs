@@ -17,7 +17,7 @@ namespace Hg.DoomHistory.Managers
         #region Fields & Properties
 
         public event MessageEventHandler OnMessage;
-        private readonly BackupManager _backupManager;
+        private BackupManager _backupManager;
         private readonly SettingManager _settingManager;
 
         private readonly TimeStampComparer _timeStampComparer = new TimeStampComparer(SortOrder.Descending);
@@ -30,6 +30,9 @@ namespace Hg.DoomHistory.Managers
         private List<MapData> _maps = new List<MapData>();
 
         private bool _restoring;
+        private bool _backuping;
+        private bool _deleting;
+
         private bool _screenshot;
 
         private SlotControl _slot;
@@ -40,10 +43,13 @@ namespace Hg.DoomHistory.Managers
 
         #region Members
 
-        public SlotManager(SlotControl slot, int id, SettingManager settingManager,
-            MessageEventHandler messageEventHandler)
+        public SlotManager(SlotControl slot, int id, SettingManager settingManager, MessageEventHandler messageEventHandler)
         {
             OnMessage += messageEventHandler;
+
+            _restoring = false;
+            _backuping = false;
+            _deleting = false;
 
             _slot = slot;
 
@@ -56,8 +62,11 @@ namespace Hg.DoomHistory.Managers
 
             BindEvent();
 
-            _backupManager.AutoBackupOccurred += () =>
+            _backupManager.AutoBackupOccurred += success =>
             {
+                if (_slot == null)
+                    return;
+
                 if (_slot.InvokeRequired)
                 {
                     _slot.Invoke(new Action(LoadControl));
@@ -69,7 +78,14 @@ namespace Hg.DoomHistory.Managers
 
                 if (_autoBackupSound)
                 {
-                    SoundManager.PlaySuccess();
+                    if (success)
+                    {
+                        SoundManager.PlaySuccess();
+                    }
+                    else
+                    {
+                        SoundManager.PlayError();
+                    }
                 }
             };
 
@@ -130,6 +146,102 @@ namespace Hg.DoomHistory.Managers
             return false;
         }
 
+        public bool ActionSaveDelete()
+        {
+            if (_deleting)
+            {
+                return false;
+            }
+
+            _deleting = true;
+
+            try
+            {
+                GameDetails gameDetails = GetSelectedGameDetails();
+                if (gameDetails != null)
+                {
+                    if (_backupManager.SaveDelete(gameDetails))
+                    {
+                        if (_slot.InvokeRequired)
+                        {
+                            _slot.Invoke(new Action(RefreshListView));
+                        }
+                        else
+                        {
+                            RefreshListView();
+                        }
+
+                        Message("The deletion has been successful", "Deletion Complete", MessageType.Information, MessageMode.User);
+                        return true;
+                    }
+                }
+                else
+                {
+                    Message("Nothing to delete", "Nop!", MessageType.Warning, MessageMode.User);
+                    return false;
+                }
+            }
+            finally
+            {
+                _deleting = false;
+            }
+
+            Message("The deletion failed :(", "Hmm :(", MessageType.Error, MessageMode.User);
+            return false;
+        }
+
+        public bool ActionSaveBackup(bool disableScreenshot)
+        {
+            if (_backuping)
+            {
+                return false;
+            }
+
+            _backuping = true;
+
+            var screenshotStatus = _backupManager.Screenshot;
+            try
+            {
+                if (disableScreenshot)
+                    _backupManager.Screenshot = false;
+
+                if (_backupManager.SaveBackup(false))
+                {
+                    if (_slot.InvokeRequired)
+                    {
+                        _slot.Invoke(new Action(LoadControl));
+                    }
+                    else
+                    {
+                        LoadControl();
+                    }
+
+                    Message("The backup has been successful", "Backup Successful", MessageType.Information, MessageMode.User);
+                    return true;
+                }
+            }
+            finally
+            {
+                if (disableScreenshot)
+                    _backupManager.Screenshot = screenshotStatus;
+                _backuping = false;
+            }
+
+            Message("The backup failed :(", "Hmm :(", MessageType.Error, MessageMode.User);
+            return false;
+        }
+
+        public bool ActionSettingSwitchAutoBackup()
+        {
+            if (_slot != null)
+            {
+                _slot.checkBoxAutoBackup.Checked = !_slot.checkBoxAutoBackup.Checked;
+                return true;
+            }
+
+            return false;
+        }
+
         public void MapSelectNext()
         {
             if (_slot.comboBoxMaps.Items.Count <= 0)
@@ -166,6 +278,9 @@ namespace Hg.DoomHistory.Managers
 
         public void Release()
         {
+            _backupManager.Release();
+            _backupManager = null;
+
             _settingManager.TimeStampSortOrderChanged -= SetTimeStampSortOrder;
 
             UnbindEvent();
@@ -305,25 +420,7 @@ namespace Hg.DoomHistory.Managers
 
         private void ButtonBackupNowOnClick(object sender, EventArgs e)
         {
-            var screenshotStatus = _backupManager.Screenshot;
-            try
-            {
-                _backupManager.Screenshot = false;
-                if (_backupManager.SaveBackup(false))
-                {
-                    LoadControl();
-                    Message("The backup has been successful", "Backup Successful", MessageType.Information,
-                        MessageMode.User);
-                }
-                else
-                {
-                    Message("The folder seams to be missing :(", "Hmm :(", MessageType.Error, MessageMode.User);
-                }
-            }
-            finally
-            {
-                _backupManager.Screenshot = screenshotStatus;
-            }
+            ActionSaveBackup(true);
         }
 
         private void ButtonDeleteOnClick(object sender, EventArgs e)
@@ -459,7 +556,7 @@ namespace Hg.DoomHistory.Managers
 
         private List<GameDetails> GetSavedGamePerMap(MapData mapData)
         {
-            return _backupManager.SavedGameDetails.FindAll(x => x.MapName == mapData.NameInternal);
+            return _backupManager.SavedGameDetails.FindAll(x => x.LevelNumber == mapData.LevelNumber);
         }
 
         private GameDetails GetSelectedGameDetails()
@@ -622,6 +719,12 @@ namespace Hg.DoomHistory.Managers
                     RefreshListView(mapData);
                 }
             }
+        }
+
+        private void RefreshListView()
+        {
+            MapData mapData = GetSelectedMap();
+            RefreshListView(mapData);
         }
 
         private void RefreshListView(MapData mapData)
@@ -826,5 +929,6 @@ namespace Hg.DoomHistory.Managers
         }
 
         #endregion
+
     }
 }

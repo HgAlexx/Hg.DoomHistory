@@ -24,7 +24,7 @@ namespace Hg.DoomHistory.Comparers
                 return -1;
             }
 
-            return MapNameToLevel(x.NameInternal).CompareTo(MapNameToLevel(y.NameInternal));
+            return x.LevelNumber.CompareTo(y.LevelNumber);
         }
 
         public static int MapNameToLevel(string name)

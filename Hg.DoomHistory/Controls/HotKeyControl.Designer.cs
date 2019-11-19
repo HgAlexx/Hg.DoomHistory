@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.checkBoxEnable = new System.Windows.Forms.CheckBox();
+            this.checkBoxEnabled = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.checkBoxShift = new System.Windows.Forms.CheckBox();
             this.checkBoxAlt = new System.Windows.Forms.CheckBox();
@@ -38,16 +38,16 @@
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // checkBoxEnable
+            // checkBoxEnabled
             // 
-            this.checkBoxEnable.AutoSize = true;
-            this.checkBoxEnable.Location = new System.Drawing.Point(3, 22);
-            this.checkBoxEnable.Name = "checkBoxEnable";
-            this.checkBoxEnable.Size = new System.Drawing.Size(59, 17);
-            this.checkBoxEnable.TabIndex = 0;
-            this.checkBoxEnable.Text = "Enable";
-            this.checkBoxEnable.UseVisualStyleBackColor = true;
-            this.checkBoxEnable.CheckedChanged += new System.EventHandler(this.checkBoxEnable_CheckedChanged);
+            this.checkBoxEnabled.AutoSize = true;
+            this.checkBoxEnabled.Location = new System.Drawing.Point(3, 22);
+            this.checkBoxEnabled.Name = "checkBoxEnabled";
+            this.checkBoxEnabled.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxEnabled.TabIndex = 0;
+            this.checkBoxEnabled.Text = "Enabled";
+            this.checkBoxEnabled.UseVisualStyleBackColor = true;
+            this.checkBoxEnabled.CheckedChanged += new System.EventHandler(this.checkBoxEnable_CheckedChanged);
             // 
             // groupBox1
             // 
@@ -119,7 +119,7 @@
             this.Controls.Add(this.textBoxKey);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.checkBoxEnable);
+            this.Controls.Add(this.checkBoxEnabled);
             this.MaximumSize = new System.Drawing.Size(0, 55);
             this.MinimumSize = new System.Drawing.Size(347, 55);
             this.Name = "HotKeyControl";
@@ -134,7 +134,7 @@
         #endregion
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
-        public System.Windows.Forms.CheckBox checkBoxEnable;
+        public System.Windows.Forms.CheckBox checkBoxEnabled;
         public System.Windows.Forms.CheckBox checkBoxShift;
         public System.Windows.Forms.CheckBox checkBoxAlt;
         public System.Windows.Forms.CheckBox checkBoxControl;

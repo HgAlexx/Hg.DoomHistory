@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Hg.DoomHistory</RootNamespace>
     <AssemblyName>Hg.DoomHistory</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -108,6 +108,7 @@
       <DependentUpon>FormSettingsHotKeys.cs</DependentUpon>
     </Compile>
     <Compile Include="Managers\BackupManager.cs" />
+    <Compile Include="Types\Error.cs" />
     <Compile Include="Types\HotKeyToAction.cs" />
     <Compile Include="Utilities\ExceptionHandler.cs" />
     <Compile Include="Forms\FormDebugConsole.cs">
@@ -143,6 +144,7 @@
     <Compile Include="Types\GameDetails.cs" />
     <Compile Include="Types\HotKey.cs" />
     <Compile Include="Managers\HotKeysManager.cs" />
+    <Compile Include="Utilities\FormHelper.cs" />
     <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Comparers\MapComparer.cs" />
     <Compile Include="Types\MapData.cs" />

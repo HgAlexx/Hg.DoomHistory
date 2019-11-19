@@ -9,11 +9,16 @@ namespace Hg.DoomHistory.Types
     {
         MapPrevious,
         MapNext,
+
         SaveFirst,
         SaveLast,
         SavePrevious,
         SaveNext,
-        SaveRestore
+        SaveRestore,
+        SaveDelete,
+        SaveBackup,
+
+        SettingSwitchAutoBackup
     }
 
     public delegate void HotKeyEventHandler(object sender, KeyEventArgs e, HotKeyToAction hotKeyToAction);

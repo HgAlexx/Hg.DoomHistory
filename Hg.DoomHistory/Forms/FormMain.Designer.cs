@@ -352,7 +352,7 @@ namespace Hg.DoomHistory.Forms
             // 
             this.soundToolStripMenuItem.Name = "soundToolStripMenuItem";
             this.soundToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.soundToolStripMenuItem.Text = "Sound on restore";
+            this.soundToolStripMenuItem.Text = "Sound";
             this.soundToolStripMenuItem.Click += new System.EventHandler(this.soundToolStripMenuItem_Click);
             // 
             // setKeysToolStripMenuItem

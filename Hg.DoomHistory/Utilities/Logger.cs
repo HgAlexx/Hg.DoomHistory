@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using Hg.DoomHistory.Forms;
+using Hg.DoomHistory.Types;
 
 namespace Hg.DoomHistory.Utilities
 {
@@ -23,7 +24,8 @@ namespace Hg.DoomHistory.Utilities
         private static readonly List<string> LogEntries = new List<string>();
 
         private static readonly object LogEntriesLock = new object();
-
+        private static FormException _formException;
+            
         public static bool Enabled { get; set; }
 
         #endregion
@@ -96,18 +98,26 @@ namespace Hg.DoomHistory.Utilities
 
         public static void LogExceptionDialog(Exception exception)
         {
-            FormException formException = new FormException {ErrorDetails = exception.ToString()};
+            string content = "";
+            content = exception.ToString();
+
             while (exception.InnerException != null)
             {
                 exception = exception.InnerException;
-                formException.ErrorDetails += Environment.NewLine;
-                formException.ErrorDetails += exception.ToString();
+                content += Environment.NewLine;
+                content += exception.ToString();
             }
 
-            if (formException.ShowDialog() == DialogResult.Cancel)
+            if (_formException == null)
             {
-                Application.Exit(new CancelEventArgs());
+                _formException = new FormException();
             }
+
+            _formException.ErrorDetails.Add(new Error(){ Title = exception.Message, Content = content});
+            _formException.LoadCombobox();
+
+            if (!_formException.Visible)
+                _formException.Show();
         }
 
         public static event LogEvent OnLog;

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Hg.DoomHistory")]
 [assembly:
     AssemblyDescription(
-        "This tool helps generate Doom saved game backup to practice Ultra-Nightmare and/or speedrunning.")]
+"This tool helps generate Doom saved game backup to practice speedrunning.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hg")]
 [assembly: AssemblyProduct("Hg.DoomHistory")]
@@ -16,5 +16,5 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("3febf951-5435-49bd-86fc-f72775060601")]
 
-[assembly: AssemblyVersion("1.3.0.0")]
-[assembly: AssemblyFileVersion("1.3.0.0")]
+[assembly: AssemblyVersion("1.3.2.0")]
+[assembly: AssemblyFileVersion("1.3.2.0")]

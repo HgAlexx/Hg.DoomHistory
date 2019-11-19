@@ -4,8 +4,7 @@ This tool helps generate Doom saved game backup to practice Ultra-Nightmare and/
 
 ## Features
 
-- **New: Hot keys!**
-- **New: Sound notifications**
+- Hot keys
 - Auto detect Doom saved games folder (will try its best)
 - Manual backup
 - Manual restore
@@ -14,6 +13,7 @@ This tool helps generate Doom saved game backup to practice Ultra-Nightmare and/
 - Automatic backup on checkpoint
 - Distinguish between real checkpoint and death checkpoint (on auto only)
 - Can take screenshot on automatic backup (only if Doom is in windowed mode)
+- Events Sound notifications
 - Attach notes to saves
 - Import existing saved game backup
 
@@ -87,7 +87,7 @@ To improve the quality of the screenshots, decrease the quality on the settings 
 
 ## About
 
-This is not the prettiest source code in the world, I've made this software over the course of a week and there is still a lot of room for improvements.
+~~This is not the prettiest source code in the world, I've made this software over the course of a week and there is still a lot of room for improvements.~~ I put some more time in and refactor and cleanup a lot of the code.
 
 I got the idea while watching [IAmAllstin](https://www.twitch.tv/iamallstin) streaming doom. He was spending a lot of time copy/pasting save files to be able to pratice part of the game for his Ultra-Nightmare run.
 
@@ -95,8 +95,24 @@ Since I was also planning to do Doom on Ultra-Nightmare, I was going to need a w
 
 The first beta tester was [RedW4rr10r](https://www.twitch.tv/redw4rr10r) who found the first bug and made good improvements suggestions.
 
+[x_ByteMe_x](https://www.twitch.tv/x_byteme_x) who also made good improvements suggestions (global hot keys).
+
 
 # Version History
+
+## v1.3.2
+
+- \* Fix few issues with auto backup
+- \+ Add more hotkeys
+- \* Improve error reporting system (non-blocking)
+- \* Code cleanup and Optimizations
+
+
+## v1.3.1
+
+- \* Fix a potential issue with auto backup
+- \* Fix maps list: Lazarus was shown two times
+- \+ Add optional error sound if an auto backup fail
 
 ## v1.3.0
 

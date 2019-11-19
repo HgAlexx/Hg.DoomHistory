@@ -157,6 +157,8 @@ namespace Hg.DoomHistory.Managers
                     HotKeyToActions.Add(HotKeyToAction.DeserializeFromString(hotKey));
                 }
             }
+
+            CompleteHotKeyToActions();
         }
 
         public void ResetSettings()
@@ -170,24 +172,8 @@ namespace Hg.DoomHistory.Managers
             HotKeysSound = false;
 
             HotKeyToActions.Clear();
-            HotKeyToActions.Add(new HotKeyToAction
-                {Enabled = true, Action = HotKeyAction.SavePrevious, HotKey = new HotKey(Keys.Up, true, true, false)});
-            HotKeyToActions.Add(new HotKeyToAction
-                {Enabled = true, Action = HotKeyAction.SaveNext, HotKey = new HotKey(Keys.Down, true, true, false)});
-            HotKeyToActions.Add(new HotKeyToAction
-                {Enabled = true, Action = HotKeyAction.MapPrevious, HotKey = new HotKey(Keys.Left, true, true, false)});
-            HotKeyToActions.Add(new HotKeyToAction
-                {Enabled = true, Action = HotKeyAction.MapNext, HotKey = new HotKey(Keys.Right, true, true, false)});
-            HotKeyToActions.Add(new HotKeyToAction
-                {Enabled = true, Action = HotKeyAction.SaveFirst, HotKey = new HotKey(Keys.PageUp, true, true, false)});
-            HotKeyToActions.Add(new HotKeyToAction
-            {
-                Enabled = true, Action = HotKeyAction.SaveLast, HotKey = new HotKey(Keys.PageDown, true, true, false)
-            });
-            HotKeyToActions.Add(new HotKeyToAction
-            {
-                Enabled = true, Action = HotKeyAction.SaveRestore, HotKey = new HotKey(Keys.Insert, true, true, false)
-            });
+
+            CompleteHotKeyToActions();
         }
 
         public void SaveSettings()
@@ -210,6 +196,110 @@ namespace Hg.DoomHistory.Managers
             Settings.Default.HotKeysToActions = allHotKeys;
 
             Settings.Default.Save();
+        }
+
+
+        private void CompleteHotKeyToActions()
+        {
+            if (!HotKeyToActions.Exists(i => i.Action == HotKeyAction.SavePrevious))
+            {
+                HotKeyToActions.Add(new HotKeyToAction
+                {
+                    Enabled = true,
+                    Action = HotKeyAction.SavePrevious,
+                    HotKey = new HotKey(Keys.Up, true, true, false)
+                });
+            }
+
+            if (!HotKeyToActions.Exists(i => i.Action == HotKeyAction.SaveNext))
+            {
+                HotKeyToActions.Add(new HotKeyToAction
+                {
+                    Enabled = true,
+                    Action = HotKeyAction.SaveNext,
+                    HotKey = new HotKey(Keys.Down, true, true, false)
+                });
+            }
+
+            if (!HotKeyToActions.Exists(i => i.Action == HotKeyAction.MapPrevious))
+            {
+                HotKeyToActions.Add(new HotKeyToAction
+                {
+                    Enabled = true,
+                    Action = HotKeyAction.MapPrevious,
+                    HotKey = new HotKey(Keys.Left, true, true, false)
+                });
+            }
+
+            if (!HotKeyToActions.Exists(i => i.Action == HotKeyAction.MapNext))
+            {
+                HotKeyToActions.Add(new HotKeyToAction
+                {
+                    Enabled = true,
+                    Action = HotKeyAction.MapNext,
+                    HotKey = new HotKey(Keys.Right, true, true, false)
+                });
+            }
+
+            if (!HotKeyToActions.Exists(i => i.Action == HotKeyAction.SaveFirst))
+            {
+                HotKeyToActions.Add(new HotKeyToAction
+                {
+                    Enabled = true,
+                    Action = HotKeyAction.SaveFirst,
+                    HotKey = new HotKey(Keys.PageUp, true, true, false)
+                });
+            }
+
+            if (!HotKeyToActions.Exists(i => i.Action == HotKeyAction.SaveLast))
+            {
+                HotKeyToActions.Add(new HotKeyToAction
+                {
+                    Enabled = true,
+                    Action = HotKeyAction.SaveLast,
+                    HotKey = new HotKey(Keys.PageDown, true, true, false)
+                });
+            }
+
+            if (!HotKeyToActions.Exists(i => i.Action == HotKeyAction.SaveBackup))
+            {
+                HotKeyToActions.Add(new HotKeyToAction
+                {
+                    Enabled = true,
+                    Action = HotKeyAction.SaveBackup,
+                    HotKey = new HotKey(Keys.NumPad1, true, true, false)
+                });
+            }
+
+            if (!HotKeyToActions.Exists(i => i.Action == HotKeyAction.SaveDelete))
+            {
+                HotKeyToActions.Add(new HotKeyToAction
+                {
+                    Enabled = true,
+                    Action = HotKeyAction.SaveDelete,
+                    HotKey = new HotKey(Keys.NumPad2, true, true, false)
+                });
+            }
+
+            if (!HotKeyToActions.Exists(i => i.Action == HotKeyAction.SaveRestore))
+            {
+                HotKeyToActions.Add(new HotKeyToAction
+                {
+                    Enabled = true,
+                    Action = HotKeyAction.SaveRestore,
+                    HotKey = new HotKey(Keys.NumPad3, true, true, false)
+                });
+            }
+
+            if (!HotKeyToActions.Exists(i => i.Action == HotKeyAction.SettingSwitchAutoBackup))
+            {
+                HotKeyToActions.Add(new HotKeyToAction
+                {
+                    Enabled = true,
+                    Action = HotKeyAction.SettingSwitchAutoBackup,
+                    HotKey = new HotKey(Keys.NumPad8, true, true, false)
+                });
+            }
         }
 
         #endregion

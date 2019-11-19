@@ -136,6 +136,11 @@ namespace Hg.DoomHistory.Types
         [DisplayName("Map Name")]
         public string MapName { get; set; }
 
+        [Browsable(true)]
+        [ReadOnly(true)]
+        [Category("Saved Game Details")]
+        [DisplayName("Level #")]
+        public int LevelNumber { get; private set; }
 
         [Browsable(true)]
         [ReadOnly(false)]
@@ -306,11 +311,11 @@ namespace Hg.DoomHistory.Types
             {
                 MapSafe = MapSafe.Replace(invalidPathChar, ' ');
             }
-
-            int levelNumber = MapComparer.MapNameToLevel(MapName);
-            if (levelNumber > 0)
+            
+            LevelNumber = MapComparer.MapNameToLevel(MapName);
+            if (LevelNumber > 0)
             {
-                MapSafe = levelNumber.ToString().PadRight(2) + " - " + MapSafe;
+                MapSafe = LevelNumber.ToString().PadRight(2) + " - " + MapSafe;
             }
         }
 

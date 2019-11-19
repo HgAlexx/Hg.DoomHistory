@@ -33,6 +33,8 @@ namespace Hg.DoomHistory.Types
 
         public string NameSafe { get; }
 
+        public int LevelNumber { get; }
+
         #endregion
 
         #region Members
@@ -42,6 +44,7 @@ namespace Hg.DoomHistory.Types
             Name = name;
             NameSafe = nameSafe;
             NameInternal = nameInternal;
+            LevelNumber = MapComparer.MapNameToLevel(NameInternal);
 
             foreach (char invalidPathChar in Path.GetInvalidPathChars())
             {
@@ -56,18 +59,18 @@ namespace Hg.DoomHistory.Types
                 return false;
             }
 
-            return other.NameInternal == NameInternal;
+            int levelNumber = MapComparer.MapNameToLevel(other.NameInternal);
+            return LevelNumber == levelNumber;
         }
 
         public override int GetHashCode()
         {
-            return NameInternal.GetHashCode();
+            return LevelNumber;
         }
 
         public override string ToString()
         {
-            int levelNumber = MapComparer.MapNameToLevel(NameInternal);
-            return ("#" + levelNumber).PadRight(3) + ": " + Name;
+            return ("#" + LevelNumber).PadRight(3) + ": " + Name;
         }
 
         #endregion

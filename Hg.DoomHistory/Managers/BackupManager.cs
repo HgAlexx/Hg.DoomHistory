@@ -19,14 +19,15 @@ namespace Hg.DoomHistory.Managers
         Waiting
     }
 
-    public delegate void BackupEventHandler();
+    public delegate void BackupOccuredEventHandler(bool success);
+    public delegate void BackupStatusChangedEventHandler();
 
     public class BackupManager
     {
         #region Fields & Properties
 
-        public event BackupEventHandler AutoBackupOccurred;
-        public event BackupEventHandler AutoBackupStatusChanged;
+        public event BackupOccuredEventHandler AutoBackupOccurred;
+        public event BackupStatusChangedEventHandler AutoBackupStatusChanged;
         private readonly string _backupSlotPath;
         private readonly int _id;
         private readonly MapComparer _mapComparer = new MapComparer();
@@ -48,6 +49,7 @@ namespace Hg.DoomHistory.Managers
         private bool _isCheckPointAlt;
         private bool _isCheckPointMapStart;
         private bool _isGameDuration;
+        private bool _exiting;
 
         private string _screenShotExtension = ".jpg";
         private ImageFormat _screenShotFormat = ImageFormat.Jpeg;
@@ -87,6 +89,7 @@ namespace Hg.DoomHistory.Managers
 
         public BackupManager(int slotId, SettingManager settingManager)
         {
+            _exiting = false;
             SavedGameDetails = new List<GameDetails>();
 
             _id = slotId;
@@ -99,6 +102,26 @@ namespace Hg.DoomHistory.Managers
             SetScreenshotQuality();
 
             _settingManager.ScreenshotQualityChanged += SetScreenshotQuality;
+        }
+
+        public void Release()
+        {
+            _exiting = true;
+
+            AutoBackupOccurred = null;
+
+            if (_fileSystemWatcherSavedGameFolder != null)
+            {
+                _fileSystemWatcherSavedGameFolder.EnableRaisingEvents = false;
+            }
+
+            _fileSystemWatcherSavedGameFolder = null;
+            if (_fileSystemWatcherSlotFolder != null)
+            {
+                _fileSystemWatcherSlotFolder.EnableRaisingEvents = false;
+            }
+
+            _fileSystemWatcherSlotFolder = null;
         }
 
         public static IntPtr GetDoomPtr()
@@ -151,9 +174,43 @@ namespace Hg.DoomHistory.Managers
             var source = new DirectoryInfo(_savedGameSlotFolder);
             var target = new DirectoryInfo(savedGamePath);
 
-            foreach (var fileInfo in source.GetFiles())
+            int tries = 0;
+            while (tries < 10)
             {
-                fileInfo.CopyTo(Path.Combine(target.FullName, fileInfo.Name), true);
+                bool needToWait = false;
+                foreach (var fileInfo in source.GetFiles())
+                {
+                    if (fileInfo.Name.EndsWith(".temp") || fileInfo.Name.EndsWith(".temp.verify"))
+                    {
+                        Logger.Log("Slot " + _id + ", BackupSave: a temp file is still present, wait a bit", LogLevel.Debug);
+                        needToWait = true;
+                        break;
+                    }
+                }
+
+                if (needToWait)
+                {
+                    tries++;
+                    Thread.Sleep(100);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            try
+            {
+                foreach (var fileInfo in source.GetFiles())
+                {
+                    if (!fileInfo.Name.EndsWith(".temp") && !fileInfo.Name.EndsWith(".temp.verify"))
+                        fileInfo.CopyTo(Path.Combine(target.FullName, fileInfo.Name), true);
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Log("Slot " + _id + ", BackupSave: " + exception.Message, LogLevel.Error);
+                return false;
             }
 
             if (isDeath)
@@ -191,7 +248,7 @@ namespace Hg.DoomHistory.Managers
             CheckAndUpdateGameDetails(gameDetails);
             LastGameDetails = gameDetails;
 
-            Logger.Log("Slot " + _id + ", BackupSave: Exit", LogLevel.Debug);
+            Logger.Log("Slot " + _id + ", BackupSave: Exit, OK", LogLevel.Debug);
             return true;
         }
 
@@ -415,8 +472,11 @@ namespace Hg.DoomHistory.Managers
 
         private void FileSystemWatcherSavedGameFolderOnCreated(object sender, FileSystemEventArgs e)
         {
-            Logger.Log("Slot " + _id + ", FileSystemWatcherSavedGameFolderOnCreated: Slot folder created",
-                LogLevel.Debug);
+            Logger.Log("Slot " + _id + ", FileSystemWatcherSavedGameFolderOnCreated: Slot folder created", LogLevel.Debug);
+
+            if (_exiting)
+                return;
+            
             if (_autoBackupEnabled == AutoBackupStatus.Waiting)
             {
                 MakeSlotWatcher();
@@ -427,8 +487,11 @@ namespace Hg.DoomHistory.Managers
 
         private void FileSystemWatcherSavedGameFolderOnDeleted(object sender, FileSystemEventArgs e)
         {
-            Logger.Log("Slot " + _id + ", FileSystemWatcherSavedGameFolderOnCreated: Slot folder deleted",
-                LogLevel.Debug);
+            Logger.Log("Slot " + _id + ", FileSystemWatcherSavedGameFolderOnCreated: Slot folder deleted", LogLevel.Debug);
+
+            if (_exiting)
+                return;
+
             if (_fileSystemWatcherSlotFolder != null)
             {
                 if (_autoBackupEnabled == AutoBackupStatus.Enabled)
@@ -447,6 +510,9 @@ namespace Hg.DoomHistory.Managers
 
         private void FileSystemWatcherSlotFolderOnRenamed(object sender, RenamedEventArgs e)
         {
+            if (_exiting)
+                return;
+
             try
             {
                 // Fail-safe: check if Doom is running for auto-backup
@@ -463,7 +529,7 @@ namespace Hg.DoomHistory.Managers
                 if (_checkpointStartTime != null)
                 {
                     TimeSpan timeSpan = DateTime.UtcNow.Subtract(_checkpointStartTime.Value);
-                    if (timeSpan.TotalSeconds >= 5)
+                    if (timeSpan.TotalSeconds >= 3)
                     {
                         Logger.Log(
                             "Slot " + _id +
@@ -535,7 +601,11 @@ namespace Hg.DoomHistory.Managers
                         // Normal checkpoint (usually)
                         if (SaveBackup(false))
                         {
-                            AutoBackupOccurred?.Invoke();
+                            AutoBackupOccurred?.Invoke(true);
+                        }
+                        else
+                        {
+                            AutoBackupOccurred?.Invoke(false);
                         }
                     }
                     else if (_checkpointBuffer == "GA" && IncludeDeath)
@@ -546,7 +616,11 @@ namespace Hg.DoomHistory.Managers
                         // Death checkpoint (usually)
                         if (SaveBackup(true))
                         {
-                            AutoBackupOccurred?.Invoke();
+                            AutoBackupOccurred?.Invoke(true);
+                        }
+                        else
+                        {
+                            AutoBackupOccurred?.Invoke(false);
                         }
                     }
 
