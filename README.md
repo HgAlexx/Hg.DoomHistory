@@ -30,7 +30,7 @@ Just unzip and run executable!
 #### "Saved Games Folder"
 Set the path to "Saved Games Folder" using "Browse" or "Auto Detect", to point to the Doom save folder.
 Usually something like that:
-C:\Users\<username>\Saved Games\id Software\DOOM\base\savegame.user\<some big number>
+C:\Users\\<username\>\Saved Games\id Software\DOOM\base\savegame.user\\<some big number\>
 
 #### "Backup Folder"
 Set the path to "Backup Folder", this is where the application will backup your saved games files.
