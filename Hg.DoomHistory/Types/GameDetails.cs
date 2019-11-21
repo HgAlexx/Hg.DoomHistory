@@ -127,6 +127,12 @@ namespace Hg.DoomHistory.Types
         [Browsable(true)]
         [ReadOnly(true)]
         [Category("Saved Game Details")]
+        [DisplayName("Level #")]
+        public int LevelNumber { get; private set; }
+
+        [Browsable(true)]
+        [ReadOnly(true)]
+        [Category("Saved Game Details")]
         [DisplayName("Map Description")]
         public string MapDesc { get; set; }
 
@@ -135,12 +141,6 @@ namespace Hg.DoomHistory.Types
         [Category("Saved Game Details")]
         [DisplayName("Map Name")]
         public string MapName { get; set; }
-
-        [Browsable(true)]
-        [ReadOnly(true)]
-        [Category("Saved Game Details")]
-        [DisplayName("Level #")]
-        public int LevelNumber { get; private set; }
 
         [Browsable(true)]
         [ReadOnly(false)]
@@ -204,7 +204,7 @@ namespace Hg.DoomHistory.Types
         [ReadOnly(true)]
         [Category("Saved Game Details")]
         [DisplayName("Saved At")]
-        public DateTime SaveDateTime { get; set; }
+        public DateTime SavedAt { get; set; }
 
         #endregion
 
@@ -266,17 +266,17 @@ namespace Hg.DoomHistory.Types
 
                     if (values[0] == "date")
                     {
-                        SaveDateTime = DateTime.Now;
+                        SavedAt = DateTime.Now;
                         if (int.TryParse(values[1], out var unix))
                         {
-                            SaveDateTime = DateTimeOffset.FromUnixTimeSeconds(unix).LocalDateTime;
+                            SavedAt = DateTimeOffset.FromUnixTimeSeconds(unix).LocalDateTime;
                         }
 
                         // For folder name
-                        DateTimeSafe = SaveDateTime.ToString("yyyy-MM-dd HH.mm.ss");
+                        DateTimeSafe = SavedAt.ToString("yyyy-MM-dd HH.mm.ss");
 
                         // For list view
-                        DateTimeString = SaveDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                        DateTimeString = SavedAt.ToString("yyyy-MM-dd HH:mm:ss");
                     }
 
                     if (values[0] == "difficulty")
@@ -311,7 +311,7 @@ namespace Hg.DoomHistory.Types
             {
                 MapSafe = MapSafe.Replace(invalidPathChar, ' ');
             }
-            
+
             LevelNumber = MapComparer.MapNameToLevel(MapName);
             if (LevelNumber > 0)
             {

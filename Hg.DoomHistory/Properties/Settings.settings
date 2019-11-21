@@ -16,7 +16,7 @@
     <Setting Name="ScreenshotQuality" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="TimeStampSortOrder" Type="System.Int32" Scope="User">
+    <Setting Name="SortOrder" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="HotKeysActive" Type="System.Boolean" Scope="User">
@@ -30,6 +30,9 @@
     </Setting>
     <Setting Name="UpgradeRequired" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SortKind" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

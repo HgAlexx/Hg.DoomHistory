@@ -39,7 +39,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>true</Prefer32Bit>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,6 +49,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Images\omg.ico</ApplicationIcon>
@@ -75,6 +76,9 @@
   <PropertyGroup>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Hg.DoomHistory.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -89,6 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comparers\PlayedTimeComparer.cs" />
     <Compile Include="Controls\HotKeyControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -108,6 +113,7 @@
       <DependentUpon>FormSettingsHotKeys.cs</DependentUpon>
     </Compile>
     <Compile Include="Managers\BackupManager.cs" />
+    <Compile Include="Types\SortKind.cs" />
     <Compile Include="Types\Error.cs" />
     <Compile Include="Types\HotKeyToAction.cs" />
     <Compile Include="Utilities\ExceptionHandler.cs" />
@@ -163,7 +169,7 @@
     </Compile>
     <Compile Include="Managers\SlotManager.cs" />
     <Compile Include="Managers\SoundManager.cs" />
-    <Compile Include="Comparers\TimeStampComparer.cs" />
+    <Compile Include="Comparers\SavedAtComparer.cs" />
     <EmbeddedResource Include="Controls\HotKeyControl.resx">
       <DependentUpon>HotKeyControl.cs</DependentUpon>
     </EmbeddedResource>

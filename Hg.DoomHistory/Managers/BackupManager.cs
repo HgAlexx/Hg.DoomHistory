@@ -20,6 +20,7 @@ namespace Hg.DoomHistory.Managers
     }
 
     public delegate void BackupOccuredEventHandler(bool success);
+
     public delegate void BackupStatusChangedEventHandler();
 
     public class BackupManager
@@ -41,6 +42,7 @@ namespace Hg.DoomHistory.Managers
         private string _checkpointBuffer = "";
 
         private DateTime? _checkpointStartTime;
+        private bool _exiting;
 
         private FileSystemWatcher _fileSystemWatcherSavedGameFolder;
         private FileSystemWatcher _fileSystemWatcherSlotFolder;
@@ -49,7 +51,6 @@ namespace Hg.DoomHistory.Managers
         private bool _isCheckPointAlt;
         private bool _isCheckPointMapStart;
         private bool _isGameDuration;
-        private bool _exiting;
 
         private string _screenShotExtension = ".jpg";
         private ImageFormat _screenShotFormat = ImageFormat.Jpeg;
@@ -104,6 +105,21 @@ namespace Hg.DoomHistory.Managers
             _settingManager.ScreenshotQualityChanged += SetScreenshotQuality;
         }
 
+        public static IntPtr GetDoomPtr()
+        {
+            var doomPtr = IntPtr.Zero;
+            foreach (var process in Process.GetProcesses())
+            {
+                if (process.ProcessName == "DOOMx64" || process.ProcessName == "DOOMx64vk")
+                {
+                    doomPtr = process.MainWindowHandle;
+                    break;
+                }
+            }
+
+            return doomPtr;
+        }
+
         public void Release()
         {
             _exiting = true;
@@ -122,21 +138,6 @@ namespace Hg.DoomHistory.Managers
             }
 
             _fileSystemWatcherSlotFolder = null;
-        }
-
-        public static IntPtr GetDoomPtr()
-        {
-            var doomPtr = IntPtr.Zero;
-            foreach (var process in Process.GetProcesses())
-            {
-                if (process.ProcessName == "DOOMx64" || process.ProcessName == "DOOMx64vk")
-                {
-                    doomPtr = process.MainWindowHandle;
-                    break;
-                }
-            }
-
-            return doomPtr;
         }
 
         public bool SaveBackup(bool isDeath)
@@ -182,7 +183,8 @@ namespace Hg.DoomHistory.Managers
                 {
                     if (fileInfo.Name.EndsWith(".temp") || fileInfo.Name.EndsWith(".temp.verify"))
                     {
-                        Logger.Log("Slot " + _id + ", BackupSave: a temp file is still present, wait a bit", LogLevel.Debug);
+                        Logger.Log("Slot " + _id + ", BackupSave: a temp file is still present, wait a bit",
+                            LogLevel.Debug);
                         needToWait = true;
                         break;
                     }
@@ -204,7 +206,9 @@ namespace Hg.DoomHistory.Managers
                 foreach (var fileInfo in source.GetFiles())
                 {
                     if (!fileInfo.Name.EndsWith(".temp") && !fileInfo.Name.EndsWith(".temp.verify"))
+                    {
                         fileInfo.CopyTo(Path.Combine(target.FullName, fileInfo.Name), true);
+                    }
                 }
             }
             catch (Exception exception)
@@ -472,11 +476,14 @@ namespace Hg.DoomHistory.Managers
 
         private void FileSystemWatcherSavedGameFolderOnCreated(object sender, FileSystemEventArgs e)
         {
-            Logger.Log("Slot " + _id + ", FileSystemWatcherSavedGameFolderOnCreated: Slot folder created", LogLevel.Debug);
+            Logger.Log("Slot " + _id + ", FileSystemWatcherSavedGameFolderOnCreated: Slot folder created",
+                LogLevel.Debug);
 
             if (_exiting)
+            {
                 return;
-            
+            }
+
             if (_autoBackupEnabled == AutoBackupStatus.Waiting)
             {
                 MakeSlotWatcher();
@@ -487,10 +494,13 @@ namespace Hg.DoomHistory.Managers
 
         private void FileSystemWatcherSavedGameFolderOnDeleted(object sender, FileSystemEventArgs e)
         {
-            Logger.Log("Slot " + _id + ", FileSystemWatcherSavedGameFolderOnCreated: Slot folder deleted", LogLevel.Debug);
+            Logger.Log("Slot " + _id + ", FileSystemWatcherSavedGameFolderOnCreated: Slot folder deleted",
+                LogLevel.Debug);
 
             if (_exiting)
+            {
                 return;
+            }
 
             if (_fileSystemWatcherSlotFolder != null)
             {
@@ -511,7 +521,9 @@ namespace Hg.DoomHistory.Managers
         private void FileSystemWatcherSlotFolderOnRenamed(object sender, RenamedEventArgs e)
         {
             if (_exiting)
+            {
                 return;
+            }
 
             try
             {

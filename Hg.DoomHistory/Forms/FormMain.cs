@@ -64,10 +64,15 @@ namespace Hg.DoomHistory.Forms
                 jpgmediumToolStripMenuItem.Checked = _settingManager.ScreenshotQuality == ScreenshotQuality.Jpg;
                 pnghugeSizeToolStripMenuItem.Checked = _settingManager.ScreenshotQuality == ScreenshotQuality.Png;
             };
-            _settingManager.TimeStampSortOrderChanged += () =>
+            _settingManager.SortOrderChanged += () =>
             {
-                ascendingToolStripMenuItem.Checked = _settingManager.TimeStampSortOrder == SortOrder.Ascending;
-                descendingToolStripMenuItem.Checked = _settingManager.TimeStampSortOrder == SortOrder.Descending;
+                ascendingToolStripMenuItem.Checked = _settingManager.SortOrder == SortOrder.Ascending;
+                descendingToolStripMenuItem.Checked = _settingManager.SortOrder == SortOrder.Descending;
+            };
+            _settingManager.SortKindChanged += () =>
+            {
+                savedAtToolStripMenuItem.Checked = _settingManager.SortKind == SortKind.SavedAt;
+                playedTimeToolStripMenuItem.Checked = _settingManager.SortKind == SortKind.PlayedTime;
             };
             _settingManager.HotKeysActiveChanged += () =>
             {
@@ -101,9 +106,7 @@ namespace Hg.DoomHistory.Forms
 
         private void ascendingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _settingManager.TimeStampSortOrder = SortOrder.Ascending;
-            ascendingToolStripMenuItem.Checked = true;
-            descendingToolStripMenuItem.Checked = false;
+            _settingManager.SortOrder = SortOrder.Ascending;
         }
 
         private void ButtonAutoDetect_Click(object sender, EventArgs e)
@@ -225,8 +228,11 @@ namespace Hg.DoomHistory.Forms
             try
             {
                 // We'll get all release for now and change this to latest when a proper release is made
-                HttpWebRequest request = (HttpWebRequest) WebRequest.Create("https://api.github.com/repos/HgAlexx/Hg.DoomHistory/releases");
-                request.UserAgent = "Hg.DoomHistory/" + versionFormatted + " (" + Environment.OSVersion + ") " + "By: HgAlexx";
+                HttpWebRequest request =
+                    (HttpWebRequest) WebRequest.Create(
+                        "https://api.github.com/repos/HgAlexx/Hg.DoomHistory/releases/latest");
+                request.UserAgent = "Hg.DoomHistory/" + versionFormatted + " (" + Environment.OSVersion + ") " +
+                                    "By: HgAlexx";
 
                 HttpWebResponse response = (HttpWebResponse) request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
@@ -273,25 +279,29 @@ namespace Hg.DoomHistory.Forms
 
                 if (maxVersion > _version)
                 {
-                    if (Message("A new version is available, do you want to open the release page?", "New version available!", MessageType.Question, MessageMode.MessageBox) == DialogResult.Yes)
+                    if (Message("A new version is available, do you want to open the release page?",
+                            "New version available!", MessageType.Question, MessageMode.MessageBox) == DialogResult.Yes)
                     {
                         Process.Start("https://github.com/HgAlexx/Hg.DoomHistory/releases");
                     }
                 }
                 else
                 {
-                    Message(@"No new version found", @"You are up-to-date", MessageType.Information, MessageMode.User);
+                    Message(@"No new version found", @"You are up-to-date", MessageType.Information,
+                        MessageMode.MessageBox);
                 }
             }
             else
             {
-                Message(@"Unable to check for a new version, please try again later", @"Hmm :(", MessageType.Information, MessageMode.User);
+                Message(@"Unable to check for a new version, please try again later", @"Hmm :(",
+                    MessageType.Information, MessageMode.MessageBox);
             }
         }
 
         private void clearSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Message("Are you sure you want to reset all global settings?", "Reset global settings?", MessageType.Question, MessageMode.MessageBox) == DialogResult.Yes)
+            if (Message("Are you sure you want to reset all global settings?", "Reset global settings?",
+                    MessageType.Question, MessageMode.MessageBox) == DialogResult.Yes)
             {
                 Release();
 
@@ -343,9 +353,7 @@ namespace Hg.DoomHistory.Forms
 
         private void descendingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _settingManager.TimeStampSortOrder = SortOrder.Descending;
-            ascendingToolStripMenuItem.Checked = false;
-            descendingToolStripMenuItem.Checked = true;
+            _settingManager.SortOrder = SortOrder.Descending;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -416,7 +424,9 @@ namespace Hg.DoomHistory.Forms
             }
 
             if (_settingManager.HotKeysActive)
+            {
                 _hotKeysManager.Hook();
+            }
         }
 
         private bool IsBackupFolderValid()
@@ -657,15 +667,20 @@ namespace Hg.DoomHistory.Forms
                 case HotKeyAction.SaveLast:
                 case HotKeyAction.SavePrevious:
                 case HotKeyAction.SaveNext:
-                
+
                 case HotKeyAction.SaveRestore:
                 case HotKeyAction.SaveBackup:
                 case HotKeyAction.SaveDelete:
-                
+
                 case HotKeyAction.SettingSwitchAutoBackup:
                     e.Handled = true;
                     break;
             }
+        }
+
+        private void PlayedTimeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _settingManager.SortKind = SortKind.PlayedTime;
         }
 
         private void pnghugeSizeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -694,6 +709,11 @@ namespace Hg.DoomHistory.Forms
             _slot1 = null;
             _slot2 = null;
             _slot3 = null;
+        }
+
+        private void SavedAtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _settingManager.SortKind = SortKind.SavedAt;
         }
 
         private void SaveSettings()

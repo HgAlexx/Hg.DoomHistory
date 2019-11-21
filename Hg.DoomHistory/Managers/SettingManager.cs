@@ -20,7 +20,8 @@ namespace Hg.DoomHistory.Managers
         public event SettingEventHandler NotificationModeChanged;
         public event SettingEventHandler SavedGameFolderChanged;
         public event SettingEventHandler ScreenshotQualityChanged;
-        public event SettingEventHandler TimeStampSortOrderChanged;
+        public event SettingEventHandler SortKindChanged;
+        public event SettingEventHandler SortOrderChanged;
 
         private string _backupFolder;
         private bool _hotKeysActive;
@@ -28,7 +29,8 @@ namespace Hg.DoomHistory.Managers
         private MessageMode _notificationMode;
         private string _savedGameFolder;
         private ScreenshotQuality _screenshotQuality;
-        private SortOrder _timeStampSortOrder;
+        private SortKind _sortKind;
+        private SortOrder _sortOrder;
 
         public string BackupFolder
         {
@@ -92,13 +94,23 @@ namespace Hg.DoomHistory.Managers
             }
         }
 
-        public SortOrder TimeStampSortOrder
+        public SortKind SortKind
         {
-            get => _timeStampSortOrder;
+            get => _sortKind;
             set
             {
-                _timeStampSortOrder = value;
-                TimeStampSortOrderChanged?.Invoke();
+                _sortKind = value;
+                SortKindChanged?.Invoke();
+            }
+        }
+
+        public SortOrder SortOrder
+        {
+            get => _sortOrder;
+            set
+            {
+                _sortOrder = value;
+                SortOrderChanged?.Invoke();
             }
         }
 
@@ -118,7 +130,8 @@ namespace Hg.DoomHistory.Managers
             SavedGameFolder = Settings.Default.SavedGameFolder;
             NotificationMode = (MessageMode) Settings.Default.NotificationMode;
             ScreenshotQuality = (ScreenshotQuality) Settings.Default.ScreenshotQuality;
-            TimeStampSortOrder = (SortOrder) Settings.Default.TimeStampSortOrder;
+            SortOrder = (SortOrder) Settings.Default.SortOrder;
+            SortKind = (SortKind) Settings.Default.SortKind;
             HotKeysActive = Settings.Default.HotKeysActive;
             HotKeysSound = Settings.Default.HotKeysSound;
 
@@ -132,9 +145,14 @@ namespace Hg.DoomHistory.Managers
                 ScreenshotQuality = ScreenshotQuality.Jpg;
             }
 
-            if (TimeStampSortOrder == SortOrder.None)
+            if (SortOrder == SortOrder.None)
             {
-                TimeStampSortOrder = SortOrder.Ascending;
+                SortOrder = SortOrder.Ascending;
+            }
+
+            if (SortKind == SortKind.None)
+            {
+                SortKind = SortKind.SavedAt;
             }
 
             if (!Directory.Exists(SavedGameFolder))
@@ -167,7 +185,8 @@ namespace Hg.DoomHistory.Managers
             SavedGameFolder = "";
             NotificationMode = MessageMode.MessageBox;
             ScreenshotQuality = ScreenshotQuality.Jpg;
-            TimeStampSortOrder = SortOrder.Descending;
+            SortOrder = SortOrder.Descending;
+            SortKind = SortKind.SavedAt;
             HotKeysActive = false;
             HotKeysSound = false;
 
@@ -182,7 +201,8 @@ namespace Hg.DoomHistory.Managers
             Settings.Default.SavedGameFolder = SavedGameFolder;
             Settings.Default.NotificationMode = (int) NotificationMode;
             Settings.Default.ScreenshotQuality = (int) ScreenshotQuality;
-            Settings.Default.TimeStampSortOrder = (int) TimeStampSortOrder;
+            Settings.Default.SortOrder = (int) SortOrder;
+            Settings.Default.SortKind = (int)SortKind;
             Settings.Default.HotKeysActive = HotKeysActive;
             Settings.Default.HotKeysSound = HotKeysSound;
 

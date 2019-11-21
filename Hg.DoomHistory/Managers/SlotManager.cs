@@ -17,21 +17,22 @@ namespace Hg.DoomHistory.Managers
         #region Fields & Properties
 
         public event MessageEventHandler OnMessage;
-        private BackupManager _backupManager;
+        private readonly PlayedTimeComparer _playedTimeComparer = new PlayedTimeComparer(SortOrder.Descending);
+
+        private readonly SavedAtComparer _savedAtComparer = new SavedAtComparer(SortOrder.Descending);
         private readonly SettingManager _settingManager;
 
-        private readonly TimeStampComparer _timeStampComparer = new TimeStampComparer(SortOrder.Descending);
-
         private bool _autoBackup;
-        private bool _autoBackupSound;
         private bool _autoBackupSelect = true;
+        private bool _autoBackupSound;
+        private bool _backuping;
+        private BackupManager _backupManager;
+        private bool _deleting;
         private bool _includeDeath;
 
         private List<MapData> _maps = new List<MapData>();
 
         private bool _restoring;
-        private bool _backuping;
-        private bool _deleting;
 
         private bool _screenshot;
 
@@ -43,7 +44,8 @@ namespace Hg.DoomHistory.Managers
 
         #region Members
 
-        public SlotManager(SlotControl slot, int id, SettingManager settingManager, MessageEventHandler messageEventHandler)
+        public SlotManager(SlotControl slot, int id, SettingManager settingManager,
+            MessageEventHandler messageEventHandler)
         {
             OnMessage += messageEventHandler;
 
@@ -65,7 +67,9 @@ namespace Hg.DoomHistory.Managers
             _backupManager.AutoBackupOccurred += success =>
             {
                 if (_slot == null)
+                {
                     return;
+                }
 
                 if (_slot.InvokeRequired)
                 {
@@ -105,9 +109,102 @@ namespace Hg.DoomHistory.Managers
 
             LoadControl();
 
-            SetTimeStampSortOrder();
+            SetSortOrder();
 
-            _settingManager.TimeStampSortOrderChanged += SetTimeStampSortOrder;
+            _settingManager.SortOrderChanged += SetSortOrder;
+            _settingManager.SortKindChanged += SetSortKind;
+        }
+
+        public bool ActionSaveBackup(bool disableScreenshot)
+        {
+            if (_backuping)
+            {
+                return false;
+            }
+
+            _backuping = true;
+
+            var screenshotStatus = _backupManager.Screenshot;
+            try
+            {
+                if (disableScreenshot)
+                {
+                    _backupManager.Screenshot = false;
+                }
+
+                if (_backupManager.SaveBackup(false))
+                {
+                    if (_slot.InvokeRequired)
+                    {
+                        _slot.Invoke(new Action(LoadControl));
+                    }
+                    else
+                    {
+                        LoadControl();
+                    }
+
+                    Message("The backup has been successful", "Backup Successful", MessageType.Information,
+                        MessageMode.User);
+                    return true;
+                }
+            }
+            finally
+            {
+                if (disableScreenshot)
+                {
+                    _backupManager.Screenshot = screenshotStatus;
+                }
+
+                _backuping = false;
+            }
+
+            Message("The backup failed :(", "Hmm :(", MessageType.Error, MessageMode.User);
+            return false;
+        }
+
+        public bool ActionSaveDelete()
+        {
+            if (_deleting)
+            {
+                return false;
+            }
+
+            _deleting = true;
+
+            try
+            {
+                GameDetails gameDetails = GetSelectedGameDetails();
+                if (gameDetails != null)
+                {
+                    if (_backupManager.SaveDelete(gameDetails))
+                    {
+                        if (_slot.InvokeRequired)
+                        {
+                            _slot.Invoke(new Action(RefreshListView));
+                        }
+                        else
+                        {
+                            RefreshListView();
+                        }
+
+                        Message("The deletion has been successful", "Deletion Complete", MessageType.Information,
+                            MessageMode.User);
+                        return true;
+                    }
+                }
+                else
+                {
+                    Message("Nothing to delete", "Nop!", MessageType.Warning, MessageMode.User);
+                    return false;
+                }
+            }
+            finally
+            {
+                _deleting = false;
+            }
+
+            Message("The deletion failed :(", "Hmm :(", MessageType.Error, MessageMode.User);
+            return false;
         }
 
         public bool ActionSaveRestore()
@@ -143,91 +240,6 @@ namespace Hg.DoomHistory.Managers
             }
 
             Message("The restoration failed :(", "Hmm :(", MessageType.Error, MessageMode.User);
-            return false;
-        }
-
-        public bool ActionSaveDelete()
-        {
-            if (_deleting)
-            {
-                return false;
-            }
-
-            _deleting = true;
-
-            try
-            {
-                GameDetails gameDetails = GetSelectedGameDetails();
-                if (gameDetails != null)
-                {
-                    if (_backupManager.SaveDelete(gameDetails))
-                    {
-                        if (_slot.InvokeRequired)
-                        {
-                            _slot.Invoke(new Action(RefreshListView));
-                        }
-                        else
-                        {
-                            RefreshListView();
-                        }
-
-                        Message("The deletion has been successful", "Deletion Complete", MessageType.Information, MessageMode.User);
-                        return true;
-                    }
-                }
-                else
-                {
-                    Message("Nothing to delete", "Nop!", MessageType.Warning, MessageMode.User);
-                    return false;
-                }
-            }
-            finally
-            {
-                _deleting = false;
-            }
-
-            Message("The deletion failed :(", "Hmm :(", MessageType.Error, MessageMode.User);
-            return false;
-        }
-
-        public bool ActionSaveBackup(bool disableScreenshot)
-        {
-            if (_backuping)
-            {
-                return false;
-            }
-
-            _backuping = true;
-
-            var screenshotStatus = _backupManager.Screenshot;
-            try
-            {
-                if (disableScreenshot)
-                    _backupManager.Screenshot = false;
-
-                if (_backupManager.SaveBackup(false))
-                {
-                    if (_slot.InvokeRequired)
-                    {
-                        _slot.Invoke(new Action(LoadControl));
-                    }
-                    else
-                    {
-                        LoadControl();
-                    }
-
-                    Message("The backup has been successful", "Backup Successful", MessageType.Information, MessageMode.User);
-                    return true;
-                }
-            }
-            finally
-            {
-                if (disableScreenshot)
-                    _backupManager.Screenshot = screenshotStatus;
-                _backuping = false;
-            }
-
-            Message("The backup failed :(", "Hmm :(", MessageType.Error, MessageMode.User);
             return false;
         }
 
@@ -281,7 +293,8 @@ namespace Hg.DoomHistory.Managers
             _backupManager.Release();
             _backupManager = null;
 
-            _settingManager.TimeStampSortOrderChanged -= SetTimeStampSortOrder;
+            _settingManager.SortOrderChanged -= SetSortOrder;
+            _settingManager.SortKindChanged -= SetSortKind;
 
             UnbindEvent();
             UnloadControl();
@@ -413,11 +426,6 @@ namespace Hg.DoomHistory.Managers
             _slot.propertyGridGameDetails.PropertyValueChanged += PropertyGridGameDetailsOnPropertyValueChanged;
         }
 
-        private void CheckBoxAutoSelectOnCheckStateChanged(object sender, EventArgs e)
-        {
-            _autoBackupSelect = _slot.checkBoxAutoSelect.Checked;
-        }
-
         private void ButtonBackupNowOnClick(object sender, EventArgs e)
         {
             ActionSaveBackup(true);
@@ -483,6 +491,11 @@ namespace Hg.DoomHistory.Managers
 
                 SetAutoBackupMessage();
             }
+        }
+
+        private void CheckBoxAutoSelectOnCheckStateChanged(object sender, EventArgs e)
+        {
+            _autoBackupSelect = _slot.checkBoxAutoSelect.Checked;
         }
 
         private void CheckBoxIncludeDeathOnCheckedChanged(object sender, EventArgs e)
@@ -732,7 +745,15 @@ namespace Hg.DoomHistory.Managers
             _slot.listViewSavedGames.BeginUpdate();
 
             List<GameDetails> savedGames = GetSavedGamePerMap(mapData);
-            savedGames.Sort((data1, data2) => _timeStampComparer.Compare(data1, data2));
+
+            if (_settingManager.SortKind == SortKind.SavedAt)
+            {
+                savedGames.Sort((data1, data2) => _savedAtComparer.Compare(data1, data2));
+            }
+            else
+            {
+                savedGames.Sort((data1, data2) => _playedTimeComparer.Compare(data1, data2));
+            }
 
             var selected = -1;
             if (_slot.listViewSavedGames.SelectedItems.Count > 0)
@@ -875,9 +896,16 @@ namespace Hg.DoomHistory.Managers
             Message(message, "", MessageType.Information, MessageMode.Status);
         }
 
-        private void SetTimeStampSortOrder()
+        private void SetSortKind()
         {
-            _timeStampComparer.SortAscending = _settingManager.TimeStampSortOrder;
+            ComboBoxMapsOnSelectionChangeCommitted(null, null);
+        }
+
+        private void SetSortOrder()
+        {
+            _savedAtComparer.SortOrder = _settingManager.SortOrder;
+            _playedTimeComparer.SortOrder = _settingManager.SortOrder;
+
             ComboBoxMapsOnSelectionChangeCommitted(null, null);
         }
 
@@ -929,6 +957,5 @@ namespace Hg.DoomHistory.Managers
         }
 
         #endregion
-
     }
 }

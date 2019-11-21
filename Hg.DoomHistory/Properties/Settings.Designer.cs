@@ -74,12 +74,12 @@ namespace Hg.DoomHistory.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int TimeStampSortOrder {
+        public int SortOrder {
             get {
-                return ((int)(this["TimeStampSortOrder"]));
+                return ((int)(this["SortOrder"]));
             }
             set {
-                this["TimeStampSortOrder"] = value;
+                this["SortOrder"] = value;
             }
         }
         
@@ -128,6 +128,18 @@ namespace Hg.DoomHistory.Properties {
             }
             set {
                 this["UpgradeRequired"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SortKind {
+            get {
+                return ((int)(this["SortKind"]));
+            }
+            set {
+                this["SortKind"] = value;
             }
         }
     }

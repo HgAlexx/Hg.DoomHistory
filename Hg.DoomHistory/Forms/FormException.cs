@@ -13,9 +13,9 @@ namespace Hg.DoomHistory.Forms
 {
     public partial class FormException : Form
     {
-        private List<Error> _errorDetails = new List<Error>();
-
         #region Fields & Properties
+
+        private List<Error> _errorDetails = new List<Error>();
 
         public List<Error> ErrorDetails
         {
@@ -31,7 +31,7 @@ namespace Hg.DoomHistory.Forms
         {
             InitializeComponent();
         }
-        
+
         public void LoadCombobox()
         {
             comboBoxErrors.Items.Clear();
@@ -45,20 +45,9 @@ namespace Hg.DoomHistory.Forms
             textBoxErrorCount.Text = _errorDetails.Count.ToString();
         }
 
-        private void buttonSend_Click(object sender, EventArgs e)
+        private void ButtonContinue_Click(object sender, EventArgs e)
         {
-            Process.Start("https://github.com/HgAlexx/Hg.DoomHistory/issues/new");
-        }
-
-        #endregion
-
-        private void ComboBoxErrors_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (comboBoxErrors.SelectedIndex >= 0)
-            {
-                var error = _errorDetails[comboBoxErrors.SelectedIndex];
-                textBoxDetail.Text = error.Content;
-            }
+            Close();
         }
 
         private void ButtonExit_Click(object sender, EventArgs e)
@@ -66,14 +55,8 @@ namespace Hg.DoomHistory.Forms
             Application.Exit();
         }
 
-        private void ButtonContinue_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
         private void ButtonSaveErrorsToFile_Click(object sender, EventArgs e)
         {
-
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
 
             if (folderBrowserDialog.ShowDialog(this) == DialogResult.OK)
@@ -91,8 +74,25 @@ namespace Hg.DoomHistory.Forms
                 {
                     File.Delete(filePath);
                 }
+
                 File.WriteAllText(filePath, content);
             }
         }
+
+        private void buttonSend_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/HgAlexx/Hg.DoomHistory/issues/new");
+        }
+
+        private void ComboBoxErrors_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxErrors.SelectedIndex >= 0)
+            {
+                var error = _errorDetails[comboBoxErrors.SelectedIndex];
+                textBoxDetail.Text = error.Content;
+            }
+        }
+
+        #endregion
     }
 }

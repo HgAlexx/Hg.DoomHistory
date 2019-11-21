@@ -65,7 +65,7 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(541, 265);
+            this.tableLayoutPanel.Size = new System.Drawing.Size(541, 269);
             this.tableLayoutPanel.TabIndex = 0;
             // 
             // logoPictureBox
@@ -75,7 +75,7 @@
             this.logoPictureBox.Location = new System.Drawing.Point(3, 3);
             this.logoPictureBox.Name = "logoPictureBox";
             this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 7);
-            this.logoPictureBox.Size = new System.Drawing.Size(254, 259);
+            this.logoPictureBox.Size = new System.Drawing.Size(254, 263);
             this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.logoPictureBox.TabIndex = 12;
             this.logoPictureBox.TabStop = false;
@@ -83,6 +83,7 @@
             // labelProductName
             // 
             this.labelProductName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelProductName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelProductName.Location = new System.Drawing.Point(266, 0);
             this.labelProductName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.labelProductName.MaximumSize = new System.Drawing.Size(0, 17);
@@ -130,13 +131,11 @@
             // textBoxDescription
             // 
             this.textBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxDescription.Location = new System.Drawing.Point(266, 107);
-            this.textBoxDescription.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
+            this.textBoxDescription.Location = new System.Drawing.Point(263, 107);
             this.textBoxDescription.Multiline = true;
             this.textBoxDescription.Name = "textBoxDescription";
             this.textBoxDescription.ReadOnly = true;
-            this.textBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxDescription.Size = new System.Drawing.Size(272, 47);
+            this.textBoxDescription.Size = new System.Drawing.Size(275, 47);
             this.textBoxDescription.TabIndex = 23;
             this.textBoxDescription.TabStop = false;
             this.textBoxDescription.Text = "This tool helps generate Doom saved game backup to practice Ultra-Nightmare and/o" +
@@ -146,7 +145,7 @@
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.okButton.Location = new System.Drawing.Point(463, 239);
+            this.okButton.Location = new System.Drawing.Point(463, 243);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 24;
@@ -159,17 +158,19 @@
             this.textBoxContributor.Multiline = true;
             this.textBoxContributor.Name = "textBoxContributor";
             this.textBoxContributor.ReadOnly = true;
-            this.textBoxContributor.Size = new System.Drawing.Size(275, 73);
+            this.textBoxContributor.Size = new System.Drawing.Size(275, 74);
             this.textBoxContributor.TabIndex = 25;
-            this.textBoxContributor.Text = "- IAmAllstin - https://www.twitch.tv/iamallstin\r\n- RedW4rr10r - https://www.twitc" +
-    "h.tv/redw4rr10r\r\n- x_ByteMe_x - https://www.twitch.tv/x_byteme_x\r\n";
+            this.textBoxContributor.TabStop = false;
+            this.textBoxContributor.Text = "Special thanks:\r\n- IAmAllstin - https://www.twitch.tv/iamallstin\r\n- RedW4rr10r - " +
+    "https://www.twitch.tv/redw4rr10r\r\n- x_ByteMe_x - https://www.twitch.tv/x_byteme_" +
+    "x\r\n";
             // 
             // About
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(559, 283);
+            this.ClientSize = new System.Drawing.Size(559, 287);
             this.Controls.Add(this.tableLayoutPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;

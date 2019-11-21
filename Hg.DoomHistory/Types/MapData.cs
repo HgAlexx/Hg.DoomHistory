@@ -27,13 +27,13 @@ namespace Hg.DoomHistory.Types
             {@"game/sp/titan/titan", 13}
         };
 
+        public int LevelNumber { get; }
+
         public string Name { get; }
 
         public string NameInternal { get; }
 
         public string NameSafe { get; }
-
-        public int LevelNumber { get; }
 
         #endregion
 

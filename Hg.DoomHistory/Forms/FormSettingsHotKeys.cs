@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Windows.Forms;
 using Hg.DoomHistory.Controls;
 using Hg.DoomHistory.Types;
@@ -29,7 +28,7 @@ namespace Hg.DoomHistory.Forms
         private void buttonSave_Click(object sender, EventArgs e)
         {
             _keys.Clear();
-            
+
             foreach (HotKeyControl hotKeyControl in FormHelper.FindControls<HotKeyControl>(this))
             {
                 if (!_keys.Contains(hotKeyControl.Key))
@@ -38,7 +37,9 @@ namespace Hg.DoomHistory.Forms
                 }
                 else
                 {
-                    MessageBox.Show(string.Format("Duplicate hot keys are not allowed, {0} found twice.", hotKeyControl.Key), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(
+                        string.Format("Duplicate hot keys are not allowed, {0} found twice.", hotKeyControl.Key),
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     DialogResult = DialogResult.None;
                     return;
                 }

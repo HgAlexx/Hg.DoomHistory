@@ -4,10 +4,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows.Forms;
 using Hg.DoomHistory.Forms;
 using Hg.DoomHistory.Types;
 
@@ -25,7 +23,7 @@ namespace Hg.DoomHistory.Utilities
 
         private static readonly object LogEntriesLock = new object();
         private static FormException _formException;
-            
+
         public static bool Enabled { get; set; }
 
         #endregion
@@ -113,11 +111,13 @@ namespace Hg.DoomHistory.Utilities
                 _formException = new FormException();
             }
 
-            _formException.ErrorDetails.Add(new Error(){ Title = exception.Message, Content = content});
+            _formException.ErrorDetails.Add(new Error {Title = exception.Message, Content = content});
             _formException.LoadCombobox();
 
             if (!_formException.Visible)
+            {
                 _formException.Show();
+            }
         }
 
         public static event LogEvent OnLog;

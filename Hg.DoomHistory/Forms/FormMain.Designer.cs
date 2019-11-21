@@ -82,6 +82,9 @@ namespace Hg.DoomHistory.Forms
             this.checkForUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListMessageType = new System.Windows.Forms.ImageList(this.components);
+            this.savedAtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.playedTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.groupBoxGlobalConf.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageSlot1.SuspendLayout();
@@ -344,21 +347,21 @@ namespace Hg.DoomHistory.Forms
             // activeToolStripMenuItem
             // 
             this.activeToolStripMenuItem.Name = "activeToolStripMenuItem";
-            this.activeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.activeToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.activeToolStripMenuItem.Text = "Enabled";
             this.activeToolStripMenuItem.Click += new System.EventHandler(this.activeToolStripMenuItem_Click);
             // 
             // soundToolStripMenuItem
             // 
             this.soundToolStripMenuItem.Name = "soundToolStripMenuItem";
-            this.soundToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.soundToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.soundToolStripMenuItem.Text = "Sound";
             this.soundToolStripMenuItem.Click += new System.EventHandler(this.soundToolStripMenuItem_Click);
             // 
             // setKeysToolStripMenuItem
             // 
             this.setKeysToolStripMenuItem.Name = "setKeysToolStripMenuItem";
-            this.setKeysToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setKeysToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.setKeysToolStripMenuItem.Text = "Assign hot keys";
             this.setKeysToolStripMenuItem.Click += new System.EventHandler(this.setKeysToolStripMenuItem_Click);
             // 
@@ -388,23 +391,26 @@ namespace Hg.DoomHistory.Forms
             // savesSortOrderToolStripMenuItem
             // 
             this.savesSortOrderToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.savedAtToolStripMenuItem,
+            this.playedTimeToolStripMenuItem,
+            this.toolStripSeparator3,
             this.ascendingToolStripMenuItem,
             this.descendingToolStripMenuItem});
             this.savesSortOrderToolStripMenuItem.Name = "savesSortOrderToolStripMenuItem";
             this.savesSortOrderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.savesSortOrderToolStripMenuItem.Text = "Saves sort order";
+            this.savesSortOrderToolStripMenuItem.Text = "Saves sorting";
             // 
             // ascendingToolStripMenuItem
             // 
             this.ascendingToolStripMenuItem.Name = "ascendingToolStripMenuItem";
-            this.ascendingToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.ascendingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ascendingToolStripMenuItem.Text = "Ascending";
             this.ascendingToolStripMenuItem.Click += new System.EventHandler(this.ascendingToolStripMenuItem_Click);
             // 
             // descendingToolStripMenuItem
             // 
             this.descendingToolStripMenuItem.Name = "descendingToolStripMenuItem";
-            this.descendingToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.descendingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.descendingToolStripMenuItem.Text = "Descending";
             this.descendingToolStripMenuItem.Click += new System.EventHandler(this.descendingToolStripMenuItem_Click);
             // 
@@ -512,6 +518,25 @@ namespace Hg.DoomHistory.Forms
             this.imageListMessageType.Images.SetKeyName(2, "messagebox-question.png");
             this.imageListMessageType.Images.SetKeyName(3, "messagebox-exclamation.png");
             // 
+            // savedAtToolStripMenuItem
+            // 
+            this.savedAtToolStripMenuItem.Name = "savedAtToolStripMenuItem";
+            this.savedAtToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.savedAtToolStripMenuItem.Text = "Saved At";
+            this.savedAtToolStripMenuItem.Click += new System.EventHandler(this.SavedAtToolStripMenuItem_Click);
+            // 
+            // playedTimeToolStripMenuItem
+            // 
+            this.playedTimeToolStripMenuItem.Name = "playedTimeToolStripMenuItem";
+            this.playedTimeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.playedTimeToolStripMenuItem.Text = "Played Time";
+            this.playedTimeToolStripMenuItem.Click += new System.EventHandler(this.PlayedTimeToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -594,6 +619,9 @@ namespace Hg.DoomHistory.Forms
         private ToolStripMenuItem activeToolStripMenuItem;
         private ToolStripMenuItem soundToolStripMenuItem;
         private ToolStripMenuItem setKeysToolStripMenuItem;
+        private ToolStripMenuItem savedAtToolStripMenuItem;
+        private ToolStripMenuItem playedTimeToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator3;
     }
 }
 

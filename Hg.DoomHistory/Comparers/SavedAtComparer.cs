@@ -5,25 +5,25 @@ using Hg.DoomHistory.Types;
 
 namespace Hg.DoomHistory.Comparers
 {
-    public class TimeStampComparer : IComparer<GameDetails>
+    public class SavedAtComparer : IComparer<GameDetails>
     {
         #region Fields & Properties
 
-        private SortOrder _sortAscending;
+        private SortOrder _sortOrder;
 
-        public SortOrder SortAscending
+        public SortOrder SortOrder
         {
-            get => _sortAscending;
-            set => _sortAscending = value;
+            get => _sortOrder;
+            set => _sortOrder = value;
         }
 
         #endregion
 
         #region Members
 
-        public TimeStampComparer(SortOrder sortAscending)
+        public SavedAtComparer(SortOrder sortOrder)
         {
-            _sortAscending = sortAscending;
+            _sortOrder = sortOrder;
         }
 
         public int Compare(GameDetails x, GameDetails y)
@@ -43,12 +43,12 @@ namespace Hg.DoomHistory.Comparers
                 return 1;
             }
 
-            if (_sortAscending == SortOrder.Ascending)
+            if (_sortOrder == SortOrder.Ascending)
             {
-                return DateTime.Compare(x.SaveDateTime, y.SaveDateTime);
+                return DateTime.Compare(x.SavedAt, y.SavedAt);
             }
 
-            return DateTime.Compare(y.SaveDateTime, x.SaveDateTime);
+            return DateTime.Compare(y.SavedAt, x.SavedAt);
         }
 
         #endregion
