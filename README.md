@@ -1,10 +1,11 @@
+---
+#  Hg.DoomHistory as now been superseeded by [Hg.SaveHistory](https://github.com/HgAlexx/Hg.SaveHistory)
+---
+
 # Hg.DoomHistory
 
 This tool helps generate Doom saved game backup to practice Ultra-Nightmare and/or speedrunning.
 
----
-###  Hg.DoomHistory as now been superseeded by [Hg.SaveHistory](https://github.com/HgAlexx/Hg.SaveHistory)
----
 
 ## Features
 
