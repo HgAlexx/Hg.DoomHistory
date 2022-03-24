@@ -1,5 +1,5 @@
 ---
-#  Hg.DoomHistory as now been superseeded by [Hg.SaveHistory](https://github.com/HgAlexx/Hg.SaveHistory)
+#  Hg.DoomHistory has now been superseded by [Hg.SaveHistory](https://github.com/HgAlexx/Hg.SaveHistory)
 ---
 
 # Hg.DoomHistory
